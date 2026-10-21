@@ -100,8 +100,29 @@
       gap: 12px;
     }
 
+    .header-tools {
+      flex-wrap: wrap;
+    }
+
+    .src-btns {
+      flex: 1 1 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .src-btns .pick {
+      max-width: none;
+      width: 100%;
+      padding: 0 10px;
+    }
+
+    .src-btns .pick[hidden] { display: none !important; }
+    .src-btns .pick.warn { color: #c62828; border-color: #e3b8b8; }
+    .src-btns .pick:only-child, .src-btns:has(#saveBtn[hidden]) #changeBtn { grid-column: 1 / -1; }
+
     .header-tools #summary {
-      flex: 1;
+      flex: 1 1 100%;
       min-width: 0;
     }
 
@@ -710,29 +731,131 @@
     .home-panel[hidden] { display: none !important; }
 
     .home-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin: 6px 0 18px;
+      margin: 4px 0 18px;
     }
 
-    .home-choice {
+    body.is-home .title-row { display: none; }
+    body.is-home header { padding-bottom: 10px; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 76px;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: var(--bg-elev);
-      color: var(--ink);
-      font: inherit;
-      font-size: 1.3rem;
-      font-weight: 700;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: min(62vh, 460px);
+      padding: 28px 16px 16px;
+      border-radius: 28px 28px 36px 36px;
+      color: #fff;
+      background:
+        radial-gradient(120% 60% at 70% 12%, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0) 60%),
+        linear-gradient(180deg, #9db3ae 0%, #6c8c88 32%, #3f6360 62%, #243f42 100%);
       box-shadow: var(--shadow);
+    }
+
+    .hero svg.hills {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 62%;
+      pointer-events: none;
+    }
+
+    .hero-text {
+      position: relative;
+      margin: 0 0 22px;
+      text-align: center;
+      font-size: 1.9rem;
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: -0.03em;
+      text-shadow: 0 2px 14px rgba(20, 40, 40, 0.25);
+    }
+
+    .hero-text span { display: block; }
+    .hero-text .l2 { color: rgba(255, 255, 255, 0.62); }
+
+    .hero-tiles {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .tile {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      min-height: 116px;
+      padding: 14px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.17);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      font: inherit;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-align: left;
       cursor: pointer;
     }
 
-    .home-choice:active { background: var(--accent-soft); }
+    .tile svg {
+      width: 26px;
+      height: 26px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .tile:active { background: rgba(255, 255, 255, 0.3); }
+    .tile.is-off { opacity: 0.55; }
+    .tile.wide {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      min-height: 60px;
+    }
+
+    .verse {
+      margin: 26px 8px 8px;
+      text-align: center;
+      color: var(--ink);
+    }
+
+    .verse::before {
+      content: "";
+      display: block;
+      width: 36px;
+      height: 3px;
+      margin: 0 auto 16px;
+      border-radius: 3px;
+      background: var(--accent);
+      opacity: 0.55;
+    }
+
+    .verse blockquote {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      font-weight: 600;
+      word-break: keep-all;
+    }
+
+    .verse figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
 
     .exit-btn {
       min-height: 52px;
@@ -987,7 +1110,10 @@
         </div>
         <div class="header-tools">
           <p id="summary"></p>
-          <button type="button" id="changeBtn" class="pick ghost">강의 폴더 변경</button>
+          <div class="src-btns">
+            <button type="button" id="saveBtn" class="pick" hidden>폰에 저장</button>
+            <button type="button" id="changeBtn" class="pick ghost">강의 폴더 변경</button>
+          </div>
         </div>
       </header>
       <section id="playerBar" class="player">
@@ -1040,6 +1166,7 @@
     <div class="list-nav" id="listNav" hidden>
       <button type="button" id="upBtn" class="up-btn" hidden>← 상위</button>
       <nav class="crumbs" id="crumbs" aria-label="현재 위치"></nav>
+      <input id="saveInput" type="file" multiple hidden>
       <input id="picker" type="file" webkitdirectory directory multiple accept=".mp3,audio/mpeg,.jpg,.jpeg,.png,.gif,.webp,.bmp,image/*" hidden>
     </div>
     <section id="homePanel" class="home-panel" hidden></section>
@@ -2026,6 +2153,14 @@
           actions.append(startBtn);
           empty.append(title, text, actions);
         }
+        if (opfsOk && !usingLibrary) {
+          const saveCard = document.createElement("button");
+          saveCard.type = "button";
+          saveCard.className = "big-btn ghost";
+          saveCard.textContent = "폰에 저장 (다음부터 자동으로 열기)";
+          saveCard.addEventListener("click", saveAllToPhone);
+          actions.append(saveCard);
+        }
         list.append(empty);
         return;
       }
@@ -2721,32 +2856,298 @@
       slidersBox.hidden = !fineOpen;
     }
 
+    /* ================= 폰에 저장(앱 전용 저장소 OPFS) ================= */
+    const LIB_NAME = "저장된 강의";
+    const saveBtn = document.getElementById("saveBtn");
+    const saveInput = document.getElementById("saveInput");
+    const opfsOk = Boolean(navigator.storage && typeof navigator.storage.getDirectory === "function");
+    let usingLibrary = false;
+    let saveBusy = false;
+
+    function safeSegment(name) {
+      const cleaned = String(name || "").replace(/[\\/:*?"<>|]/g, "_").trim();
+      return cleaned === "." || cleaned === ".." ? "_" : cleaned;
+    }
+    async function getLibraryDir(create) {
+      const root = await navigator.storage.getDirectory();
+      return root.getDirectoryHandle(LIB_NAME, { create: Boolean(create) });
+    }
+    async function libraryHasFiles(dir) {
+      for await (const entry of dir.entries()) { void entry; return true; }
+      return false;
+    }
+    function updateSourceButtons() {
+      saveBtn.hidden = !opfsOk;
+      saveBtn.textContent = usingLibrary ? "강의 추가 저장" : "폰에 저장";
+      changeBtn.textContent = usingLibrary ? "저장 삭제" : changeLabel();
+      changeBtn.classList.toggle("warn", usingLibrary);
+    }
+    async function openLibrary() {
+      const dir = await getLibraryDir(false);
+      await openRootHandle(dir);
+      usingLibrary = true;
+      updateSourceButtons();
+    }
+    async function walkForSave(dirHandle, parts, out) {
+      for await (const [name, child] of dirHandle.entries()) {
+        if (!name || name.startsWith(".")) continue;
+        if (child.kind === "directory") await walkForSave(child, parts.concat(name), out);
+        else if (child.kind === "file") out.push({ parts, name, getFile: () => child.getFile(), hasRel: true });
+      }
+    }
+    function candidatesFromInput(files) {
+      return files.map((file) => {
+        const rel = file.webkitRelativePath || "";
+        const parts = splitPath(rel);
+        const name = parts.length ? parts.pop() : file.name;
+        return { parts, name, getFile: async () => file, hasRel: Boolean(rel), fromInputRel: Boolean(rel), size: file.size };
+      });
+    }
+    async function saveAllToPhone() {
+      if (!opfsOk || saveBusy) return;
+      if (!confirmReplace()) return;
+      if (canRememberFolder) {
+        let dir;
+        try {
+          dir = await window.showDirectoryPicker({ mode: "read", id: "lectures" });
+        } catch (error) {
+          return;
+        }
+        summary.textContent = "폴더를 읽는 중입니다…";
+        const out = [];
+        try { await walkForSave(dir, [], out); } catch (error) {
+          summary.textContent = "폴더를 읽지 못했습니다.";
+          return;
+        }
+        await runSave(out, dir.name);
+      } else {
+        summary.textContent = isMobile
+          ? "저장할 강의 파일(mp3)과 찬송가 악보 이미지를 선택하세요."
+          : "저장할 폴더를 선택하세요.";
+        saveInput.click();
+      }
+    }
+    async function runSave(cands, defaultGroup) {
+      if (saveBusy) return;
+      saveBusy = true;
+      let wake = null;
+      try {
+        const audio = [];
+        const images = [];
+        for (const c of cands) {
+          if (!c.name || c.name.startsWith(".")) continue;
+          if (isMp3(c.name)) audio.push(c);
+          else if (isImageName(c.name)) {
+            const n = chapterFromName(c.name);
+            if (n != null && HYMN_NUMBERS.has(n)) images.push(c);
+          }
+        }
+        if (!audio.length && !images.length) {
+          summary.textContent = "저장할 mp3 파일이나 장 번호 이미지를 찾지 못했습니다.";
+          return;
+        }
+        /* 폴더 구조 정리: 폴더째 선택했다면 맨 위 폴더 이름은 빼고 저장 */
+        let strip = false;
+        if (audio.length && audio.every((c) => c.hasRel && c.parts.length >= 1 && c.fromInputRel)) {
+          const first = audio[0].parts[0];
+          strip = audio.every((c) => c.parts[0] === first);
+        }
+        let group = "";
+        const flat = audio.length > 0 && audio.every((c) => (strip ? c.parts.length <= 1 : c.parts.length === 0));
+        if (flat) {
+          const answer = window.prompt("저장할 폴더 이름을 입력하세요. (예: 구약, 신약)\n비워 두면 맨 위에 저장합니다.", defaultGroup || (strip && audio[0].parts[0]) || "");
+          if (answer === null) { summary.textContent = ""; return; }
+          group = safeSegment(answer);
+        }
+        try { if (navigator.storage.persist) await navigator.storage.persist(); } catch (error) {}
+        try { if (navigator.wakeLock) wake = await navigator.wakeLock.request("screen"); } catch (error) {}
+
+        /* 용량 확인 */
+        const files = [];
+        let totalBytes = 0;
+        for (const c of audio) {
+          const file = await c.getFile();
+          files.push({ c, file });
+          totalBytes += file.size;
+        }
+        try {
+          const est = await navigator.storage.estimate();
+          if (est && est.quota && totalBytes > est.quota - (est.usage || 0)) {
+            const need = Math.ceil(totalBytes / 1048576);
+            const free = Math.floor((est.quota - (est.usage || 0)) / 1048576);
+            window.alert(`저장 공간이 부족합니다.\n필요: 약 ${need}MB / 사용 가능: 약 ${free}MB\n기기 저장 공간을 확보한 뒤 다시 시도해 주세요.`);
+            summary.textContent = "저장 공간이 부족해 저장하지 않았습니다.";
+            return;
+          }
+        } catch (error) {}
+
+        if (images.length) {
+          await importHymnFiles(await Promise.all(images.map((c) => c.getFile())));
+        }
+
+        let done = 0;
+        let skipped = 0;
+        if (files.length) {
+          const lib = await getLibraryDir(true);
+          for (const { c, file } of files) {
+            let parts = strip ? c.parts.slice(1) : c.parts.slice();
+            if (group) parts = [group].concat(parts);
+            parts = parts.map(safeSegment).filter(Boolean);
+            let dir = lib;
+            for (const part of parts) dir = await dir.getDirectoryHandle(part, { create: true });
+            const fileName = safeSegment(c.name);
+            let exists = false;
+            try {
+              const existing = await (await dir.getFileHandle(fileName)).getFile();
+              exists = existing.size === file.size;
+            } catch (error) {}
+            if (exists) {
+              skipped += 1;
+            } else {
+              const handle = await dir.getFileHandle(fileName, { create: true });
+              const writable = await handle.createWritable();
+              try {
+                await writable.write(file);
+                await writable.close();
+              } catch (error) {
+                try { await writable.abort(); } catch (inner) {}
+                throw error;
+              }
+            }
+            done += 1;
+            summary.textContent = `폰에 저장 중… ${done}/${files.length}  (화면을 켜 두세요)`;
+            if (done % 3 === 0) await yieldUi();
+          }
+        }
+        const parts = [];
+        if (files.length) parts.push(`강의 ${files.length}개${skipped ? `(이미 있던 ${skipped}개 포함)` : ""}`);
+        if (images.length) parts.push(`악보 ${images.length}장`);
+        const message = `폰에 저장했습니다: ${parts.join(" · ")}`;
+        if (files.length) {
+          resetPlayback();
+          await openLibrary();
+        } else {
+          render();
+        }
+        summary.textContent = message;
+      } catch (error) {
+        const full = error && (error.name === "QuotaExceededError" || /quota/i.test(String(error.message)));
+        summary.textContent = full
+          ? "저장 공간이 부족해 중단되었습니다. 이미 저장된 파일은 유지됩니다."
+          : "저장 중 오류가 발생했습니다. 다시 시도하면 저장된 파일은 건너뛰고 이어서 저장합니다.";
+      } finally {
+        saveBusy = false;
+        try { if (wake) await wake.release(); } catch (error) {}
+      }
+    }
+    async function wipeLibrary() {
+      if (!window.confirm("폰에 저장된 강의 파일을 모두 삭제할까요?\n(찬송가 악보는 삭제되지 않습니다)")) return;
+      try {
+        resetPlayback();
+        const root = await navigator.storage.getDirectory();
+        await root.removeEntry(LIB_NAME, { recursive: true });
+      } catch (error) {}
+      usingLibrary = false;
+      resetHymnLibrary();
+      loaded = false;
+      root_reset();
+      updateSourceButtons();
+      summary.textContent = "저장된 강의를 삭제했습니다.";
+      render();
+    }
+    function root_reset() {
+      root = emptyDir();
+      basePath = [];
+      path = [];
+      browseMode = "tree";
+      handleMap = new Map();
+      entryMap = new Map();
+      total = 0;
+    }
+    async function initSources() {
+      if (opfsOk) {
+        try {
+          const dir = await getLibraryDir(false);
+          if (await libraryHasFiles(dir)) {
+            await openLibrary();
+            return;
+          }
+        } catch (error) { /* 저장된 강의가 아직 없음 */ }
+      }
+      if (canRememberFolder) restoreSavedFolder();
+    }
+
     function renderHome(canonOT, canonNT) {
+      const ICONS = {
+        ot: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z"/></svg>',
+        nt: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M6.5 8.5h11"/></svg>',
+        hymn: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>',
+        list: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h9"/></svg>',
+      };
       homePanel.replaceChildren();
-      const add = (label, handler) => {
+
+      const hero = document.createElement("div");
+      hero.className = "hero";
+      hero.innerHTML = '<svg class="hills" viewBox="0 0 400 240" preserveAspectRatio="none" aria-hidden="true">'
+        + '<path d="M0 120 L70 70 L130 105 L210 40 L290 100 L350 70 L400 95 L400 240 L0 240Z" fill="rgba(20,45,48,0.28)"/>'
+        + '<path d="M0 165 L60 130 L140 160 L230 110 L320 155 L400 130 L400 240 L0 240Z" fill="rgba(15,35,40,0.38)"/>'
+        + '<path d="M0 205 C90 185 180 215 280 195 C340 183 380 195 400 190 L400 240 L0 240Z" fill="rgba(10,28,32,0.45)"/></svg>';
+
+      const text = document.createElement("div");
+      text.className = "hero-text";
+      const l1 = document.createElement("span");
+      l1.textContent = "노우호목사님";
+      const l2 = document.createElement("span");
+      l2.className = "l2";
+      l2.textContent = "성경강해";
+      text.append(l1, l2);
+
+      const tiles = document.createElement("div");
+      tiles.className = "hero-tiles";
+      const note = (message) => {
+        summary.textContent = message;
+        setTimeout(() => { if (summary.textContent === message) summary.textContent = ""; }, 4000);
+      };
+      const addTile = (label, icon, handler, off, wide) => {
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "home-choice";
-        btn.textContent = label;
+        btn.className = "tile" + (off ? " is-off" : "") + (wide ? " wide" : "");
+        btn.innerHTML = icon;
+        const name = document.createElement("span");
+        name.textContent = label;
+        btn.append(name);
         btn.addEventListener("click", handler);
-        homePanel.append(btn);
+        tiles.append(btn);
       };
-      if (loaded) {
-        if (canonOT) add("구약", () => openCanon("구약"));
-        if (canonNT) add("신약", () => openCanon("신약"));
-        if (!canonOT && !canonNT) add("강의", openLectures);
-      }
-      add("찬송가", openHymnView);
+      addTile("구약", ICONS.ot, () => {
+        if (canonOT) openCanon("구약");
+        else note("구약 폴더가 없습니다. 「폰에 저장」으로 구약 강의를 저장해 주세요.");
+      }, !canonOT);
+      addTile("신약", ICONS.nt, () => {
+        if (canonNT) openCanon("신약");
+        else note("신약 폴더가 없습니다. 「폰에 저장」으로 신약 강의를 저장해 주세요.");
+      }, !canonNT);
+      addTile("찬송가", ICONS.hymn, openHymnView, false);
+      if (loaded && !canonOT && !canonNT) addTile("강의 목록", ICONS.list, openLectures, false, true);
+      hero.append(text, tiles);
+
+      const verse = document.createElement("figure");
+      verse.className = "verse";
+      const quote = document.createElement("blockquote");
+      quote.textContent = "“이 예언의 말씀을 읽는 자와 듣는 자와 그 가운데에 기록한 것을 지키는 자는 복이 있나니 때가 가까움이라”";
+      const cap = document.createElement("figcaption");
+      cap.textContent = "계시록 1:3";
+      verse.append(quote, cap);
+
+      homePanel.append(hero, verse);
     }
 
     function render() {
       const canonOT = loaded ? findCanonDir("구약") : "";
       const canonNT = loaded ? findCanonDir("신약") : "";
-      const rootNode = nodeAt(basePath);
-      const rootReady = rootNode.loaded !== false && !listBuilding && (rootNode.files.length > 0 || Object.keys(rootNode.dirs).length > 0);
-      if (viewMode === "home" && loaded && rootReady && !homeForced && !canonOT && !canonNT) viewMode = "lectures";
       const hymnOn = viewMode === "hymn";
       const homeOn = viewMode === "home";
+      document.body.classList.toggle("is-home", homeOn);
       hymnPanel.hidden = !hymnOn;
       homePanel.hidden = !homeOn;
       if (homeOn) renderHome(canonOT, canonNT);
@@ -3001,8 +3402,22 @@
     }
     document.getElementById("exitBtn").addEventListener("click", exitApp);
 
-    changeBtn.textContent = changeLabel();
-    changeBtn.addEventListener("click", pickSource);
+    updateSourceButtons();
+    changeBtn.addEventListener("click", () => { if (usingLibrary) wipeLibrary(); else pickSource(); });
+    saveBtn.addEventListener("click", saveAllToPhone);
+    if (!isMobile) {
+      saveInput.setAttribute("webkitdirectory", "");
+      saveInput.setAttribute("directory", "");
+    } else {
+      saveInput.setAttribute("accept", "audio/*,image/*,.mp3");
+    }
+    saveInput.addEventListener("change", async () => {
+      const files = Array.from(saveInput.files || []);
+      saveInput.value = "";
+      if (!files.length) { summary.textContent = ""; return; }
+      await runSave(candidatesFromInput(files), "");
+    });
+    saveInput.addEventListener("cancel", () => { summary.textContent = ""; });
     homeBtn.addEventListener("click", goHome);
 
     function applyHymnSearch() {
@@ -3149,7 +3564,7 @@
     updateFineLabel();
     replaceNav();
     loadStoredHymns();
-    if (canRememberFolder) restoreSavedFolder();
+    initSources();
   </script>
 </body>
 </html>
