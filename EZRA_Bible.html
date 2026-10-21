@@ -66,8 +66,8 @@
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      gap: 10px;
-      padding: 4px 0 22px;
+      gap: 8px;
+      padding: 4px 0 12px;
     }
 
     .title-row {
@@ -94,6 +94,11 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+    }
+
+    .header-tools #summary {
+      flex: 1;
+      min-width: 0;
     }
 
     #summary {
@@ -131,13 +136,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 34px;
-      max-width: 140px;
-      padding: 0 12px;
+      min-height: 44px;
+      max-width: 220px;
+      padding: 0 18px;
       border-radius: 999px;
       background: var(--accent);
       color: var(--on-accent);
-      font-size: 0.82rem;
+      font-size: 0.92rem;
       font-weight: 700;
       cursor: pointer;
       overflow: hidden;
@@ -157,11 +162,6 @@
       border: 1px solid var(--line);
     }
 
-    #restore {
-      max-width: min(360px, 100%);
-      padding: 0 24px;
-    }
-
     .pick[hidden] { display: none !important; }
 
     .pick input {
@@ -175,34 +175,63 @@
     .list-nav {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      min-height: 38px;
-      margin: 0 0 10px;
+      gap: 10px;
+      min-height: 44px;
+      margin: 0 0 12px;
     }
+
+    .list-nav[hidden] { display: none; }
 
     .up-btn {
       flex: none;
       display: inline-flex;
       align-items: center;
-      min-height: 34px;
-      padding: 0 12px;
+      min-height: 44px;
+      padding: 0 16px;
       border: 1px solid var(--line);
       border-radius: 999px;
       background: var(--bg-elev);
       color: var(--ink);
       font: inherit;
-      font-size: 0.82rem;
+      font-size: 0.92rem;
       font-weight: 700;
       cursor: pointer;
     }
 
-    .list-nav-right {
+    .up-btn[hidden] { display: none; }
+
+    .crumbs {
+      flex: 1;
+      min-width: 0;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-left: auto;
+      gap: 4px;
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+      font-size: 0.9rem;
+    }
+
+    .crumbs::-webkit-scrollbar { display: none; }
+
+    .crumbs .sep { color: var(--muted); flex: none; }
+
+    .crumbs button {
+      flex: none;
+      min-height: 36px;
+      padding: 0 8px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .crumbs button:last-child {
+      color: var(--ink);
+      font-weight: 700;
+      cursor: default;
     }
 
     .section {
@@ -229,8 +258,8 @@
     }
 
     .list.files .row {
-      min-height: 38px;
-      padding: 5px 14px;
+      min-height: 52px;
+      padding: 8px 14px;
       border: 0;
       border-radius: 0;
       box-shadow: none;
@@ -246,7 +275,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      min-height: 48px;
+      min-height: 56px;
       padding: 8px 14px;
       border: 1px solid var(--line);
       border-radius: 16px;
@@ -296,6 +325,68 @@
     }
 
     .empty p { margin: 0; }
+
+    .empty ol {
+      margin: 10px 0 0;
+      padding-left: 20px;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .empty .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .big-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 56px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 16px;
+      background: var(--accent);
+      color: var(--on-accent);
+      font: inherit;
+      font-size: 1.02rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .big-btn.ghost {
+      background: var(--bg-elev);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .big-btn .sub {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .skeleton {
+      height: 56px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, #ece8de 25%, #f6f3ec 50%, #ece8de 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s linear infinite;
+    }
+
+    @keyframes shimmer {
+      from { background-position: 200% 0; }
+      to { background-position: -200% 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .skeleton { animation: none; }
+    }
 
     .player {
       margin: 0 0 14px;
@@ -352,13 +443,14 @@
 
     .playback {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      align-items: center;
+      gap: 14px;
     }
 
-    .playback .seek-wrap {
-      grid-column: 1 / -1;
+    .ctl-row {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr 1fr;
+      gap: 16px;
+      align-items: stretch;
     }
 
     .ctl {
@@ -366,9 +458,9 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      height: 32px;
+      min-height: 60px;
       border: 0;
-      border-radius: 12px;
+      border-radius: 16px;
       background: var(--accent);
       color: var(--on-accent);
       font: inherit;
@@ -381,9 +473,9 @@
       display: block;
       width: 0;
       height: 0;
-      margin-left: 3px;
+      margin-left: 4px;
       border-style: solid;
-      border-width: 7px 0 7px 12px;
+      border-width: 11px 0 11px 18px;
       border-color: transparent transparent transparent currentColor;
     }
 
@@ -391,29 +483,16 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
-      height: 16px;
+      gap: 6px;
+      height: 22px;
     }
 
     .pause-icon span {
       display: block;
-      width: 4px;
-      height: 16px;
+      width: 6px;
+      height: 22px;
       border-radius: 1px;
       background: currentColor;
-    }
-
-    #stopBtn {
-      background: var(--bg-elev);
-      color: var(--ink);
-      border: 1px solid var(--line);
-    }
-
-    .stop-icon {
-      width: 14px;
-      height: 14px;
-      border: 2px solid currentColor;
-      border-radius: 2px;
     }
 
     .ctl:disabled {
@@ -429,7 +508,7 @@
       display: block;
       width: 100%;
       height: 18px;
-      margin: 0;
+      margin: 6px 0;
       border: 0;
       border-radius: 999px;
       background: var(--line);
@@ -444,9 +523,9 @@
 
     #seek::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 24px;
-      height: 24px;
-      margin-top: -3px;
+      width: 28px;
+      height: 28px;
+      margin-top: -5px;
       border: 3px solid var(--player-bg);
       border-radius: 50%;
       background: var(--accent);
@@ -461,8 +540,8 @@
     }
 
     #seek::-moz-range-thumb {
-      width: 24px;
-      height: 24px;
+      width: 28px;
+      height: 28px;
       border: 3px solid var(--player-bg);
       border-radius: 50%;
       background: var(--accent);
@@ -479,36 +558,17 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .close-doc {
-      flex: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      min-height: 34px;
-      padding: 0 12px;
-      border: 0;
-      border-radius: 8px;
-      background: #c62828;
-      color: #ffffff;
-      font: inherit;
-      font-size: 0.82rem;
-      font-weight: 700;
-      line-height: 1;
-      cursor: pointer;
-    }
-
     .sliders {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px 36px;
+      gap: 14px 36px;
       align-items: center;
     }
 
     .slider-row {
       display: grid;
-      grid-template-columns: 36px minmax(0, 1fr) 48px;
-      gap: 8px;
+      grid-template-columns: 36px minmax(0, 1fr) 52px;
+      gap: 10px;
       align-items: center;
       min-width: 0;
     }
@@ -542,8 +602,8 @@
       appearance: none;
       display: block;
       width: 100%;
-      height: 6px;
-      margin: 0;
+      height: 8px;
+      margin: 10px 0;
       border: 0;
       border-radius: 999px;
       background: var(--line);
@@ -551,16 +611,16 @@
     }
 
     .slider-row input[type="range"]::-webkit-slider-runnable-track {
-      height: 6px;
+      height: 8px;
       border-radius: 999px;
       background: transparent;
     }
 
     .slider-row input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 12px;
-      height: 12px;
-      margin-top: -3px;
+      width: 24px;
+      height: 24px;
+      margin-top: -8px;
       border: 2px solid var(--player-bg);
       border-radius: 50%;
       background: var(--accent);
@@ -568,15 +628,15 @@
     }
 
     .slider-row input[type="range"]::-moz-range-track {
-      height: 6px;
+      height: 8px;
       border: 0;
       border-radius: 999px;
       background: transparent;
     }
 
     .slider-row input[type="range"]::-moz-range-thumb {
-      width: 12px;
-      height: 12px;
+      width: 24px;
+      height: 24px;
       border: 2px solid var(--player-bg);
       border-radius: 50%;
       background: var(--accent);
@@ -586,36 +646,23 @@
       .sliders { grid-template-columns: 1fr; }
     }
 
-    .transport {
-      display: flex;
-      gap: 6px;
-    }
-
-    .transport button {
-      flex: 1 1 0;
-      display: flex;
+    .ctl.nav {
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       gap: 2px;
       min-width: 0;
-      min-height: 52px;
-      padding: 6px 10px;
+      padding: 6px 8px;
       border: 1px solid var(--line);
-      border-radius: 14px;
       background: var(--bg-elev);
       color: var(--ink);
-      font: inherit;
-      cursor: pointer;
     }
 
-    .transport .label {
-      font-size: 0.92rem;
+    .ctl.nav .label {
+      font-size: 0.98rem;
       font-weight: 700;
       line-height: 1.2;
     }
 
-    .transport .hint {
+    .ctl.nav .hint {
       max-width: 100%;
       color: var(--muted);
       font-size: 0.72rem;
@@ -626,13 +673,39 @@
       white-space: nowrap;
     }
 
-    .transport .hint:empty {
+    .ctl.nav .hint:empty {
       display: none;
     }
 
-    .transport button:disabled {
-      opacity: 0.4;
-      cursor: default;
+    .exit-row {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: center;
+    }
+
+    .exit-btn {
+      min-height: 48px;
+      padding: 0 28px;
+      border: 1px solid #c62828;
+      border-radius: 999px;
+      background: var(--bg-elev);
+      color: #c62828;
+      font: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .closed-screen {
+      min-height: 100vh;
+      display: grid;
+      place-content: center;
+      gap: 16px;
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
     }
 
     :focus-visible {
@@ -647,14 +720,11 @@
       <header>
         <div class="title-row">
           <h1>노우호목사님 성경강해</h1>
-          <button type="button" id="closeList" class="close-doc" onclick="closeDocument()" aria-label="프로그램 닫기" title="프로그램 닫기">X 닫기</button>
         </div>
         <div class="header-tools">
-          <div class="actions-left">
-            <button type="button" id="restore" class="pick ghost" hidden>지난 폴더 열기</button>
-          </div>
+          <p id="summary"></p>
+          <button type="button" id="changeBtn" class="pick ghost">강의 폴더 변경</button>
         </div>
-        <p id="summary">폴더를 선택하면 하위 폴더를 거쳐 강의를 재생할 수 있습니다.</p>
       </header>
       <section id="playerBar" class="player">
         <div class="player-inner">
@@ -671,8 +741,17 @@
                 <span id="timeTotal">0:00</span>
               </div>
             </div>
-            <button type="button" id="playBtn" class="ctl" disabled aria-label="재생"><span class="play-icon"></span></button>
-            <button type="button" id="stopBtn" class="ctl" disabled aria-label="정지"><span class="stop-icon"></span></button>
+            <div class="ctl-row">
+              <button type="button" id="prev" class="ctl nav">
+                <span class="label">이전</span>
+                <span id="prevHint" class="hint"></span>
+              </button>
+              <button type="button" id="playBtn" class="ctl" disabled aria-label="재생"><span class="play-icon"></span></button>
+              <button type="button" id="next" class="ctl nav">
+                <span class="label">다음</span>
+                <span id="nextHint" class="hint"></span>
+              </button>
+            </div>
           </div>
           <div class="sliders">
             <div class="slider-row">
@@ -690,37 +769,34 @@
               <span id="volumeValue" class="value">40%</span>
             </div>
           </div>
-          <div class="transport">
-            <button type="button" id="prev">
-              <span class="label">이전</span>
-              <span id="prevHint" class="hint"></span>
-            </button>
-            <button type="button" id="next">
-              <span class="label">다음</span>
-              <span id="nextHint" class="hint"></span>
-            </button>
-          </div>
         </div>
       </section>
     </div>
-    <div class="list-nav" id="listNav">
+    <div class="list-nav" id="listNav" hidden>
       <button type="button" id="upBtn" class="up-btn" hidden>← 상위</button>
-      <div class="list-nav-right">
-        <button type="button" id="choose" class="pick" hidden>폴더 선택</button>
-        <label class="pick" id="filePick">
-          <span id="pickLabel">폴더 선택</span>
-          <input id="picker" type="file" webkitdirectory directory multiple accept=".mp3,audio/mpeg">
-        </label>
-      </div>
+      <nav class="crumbs" id="crumbs" aria-label="현재 위치"></nav>
+      <input id="picker" type="file" webkitdirectory directory multiple accept=".mp3,audio/mpeg" hidden>
     </div>
     <main id="list"></main>
+    <div class="exit-row">
+      <button type="button" id="exitBtn" class="exit-btn">프로그램 종료</button>
+    </div>
   </div>
 
   <script>
     const SPEED_KEY = "lecture-speed";
     const VOLUME_KEY = "lecture-volume";
 
-    const summary = document.getElementById("summary");
+    const summaryEl = document.getElementById("summary");
+    let statusMsg = "";
+    /* 기존 코드의 summary.textContent = "..." 호출을 그대로 쓰되, 빈 문자열이면 현재 상태를 표시합니다. */
+    const summary = {
+      set textContent(value) {
+        statusMsg = value || "";
+        renderSummary();
+      },
+      get textContent() { return statusMsg; },
+    };
     const list = document.getElementById("list");
     const picker = document.getElementById("picker");
     const player = document.getElementById("player");
@@ -732,22 +808,21 @@
     const prevHint = document.getElementById("prevHint");
     const nextHint = document.getElementById("nextHint");
     const playBtn = document.getElementById("playBtn");
-    const stopBtn = document.getElementById("stopBtn");
     const seek = document.getElementById("seek");
     const timeNow = document.getElementById("timeNow");
     const timeTotal = document.getElementById("timeTotal");
-    const closeListBtn = document.getElementById("closeList");
     const speed = document.getElementById("speed");
     const speedValue = document.getElementById("speedValue");
     const volume = document.getElementById("volume");
     const volumeValue = document.getElementById("volumeValue");
-    const chooseBtn = document.getElementById("choose");
-    const restoreBtn = document.getElementById("restore");
-    const filePick = document.getElementById("filePick");
+    const changeBtn = document.getElementById("changeBtn");
+    const listNav = document.getElementById("listNav");
+    const crumbs = document.getElementById("crumbs");
     const upBtn = document.getElementById("upBtn");
     const pageTitle = document.title.trim() || "강의 듣기";
     const canRememberFolder = window.isSecureContext && typeof window.showDirectoryPicker === "function";
     let savedHandle = null;
+    let restorable = false;
 
     let root = emptyDir();
     let basePath = [];
@@ -759,7 +834,6 @@
     let entryMap = new Map();
     let loadToken = 0;
     const isMobile = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
-    const pickLabel = document.getElementById("pickLabel");
     let currentSpeed = loadSpeed();
     let currentVolume = loadVolume();
     let current = null;
@@ -781,6 +855,13 @@
 
     function collate(a, b) {
       return a.localeCompare(b, "ko", { numeric: true, sensitivity: "base" });
+    }
+
+    async function getItemFile(item) {
+      if (item.file) return item.file;
+      if (item.handle) item.file = await item.handle.getFile();
+      else if (item.entry) item.file = await entryFile(item.entry);
+      return item.file;
     }
 
     function isMp3(name) {
@@ -1074,12 +1155,13 @@
           node.dirs[name] = childNode;
           handleMap.set(folderPath.concat(name).join("/"), child);
         } else if (child.kind === "file" && isMp3(name) && !name.startsWith("._")) {
-          const file = await child.getFile();
+          /* 파일 본문은 재생할 때 읽습니다(USB·대용량 폴더에서 목록이 빨리 뜨도록). */
           node.files.push({
-            name: file.name,
-            file,
+            name,
+            file: null,
+            handle: child,
             folderPath: folderPath.slice(),
-            relativePath: folderPath.concat(file.name).join("/"),
+            relativePath: folderPath.concat(name).join("/"),
           });
         }
       }
@@ -1111,12 +1193,12 @@
           node.dirs[entry.name] = childNode;
           entryMap.set(folderPath.concat(entry.name).join("/"), entry);
         } else if (entry.isFile && isMp3(entry.name) && !entry.name.startsWith("._")) {
-          const file = await entryFile(entry);
           node.files.push({
-            name: file.name,
-            file,
+            name: entry.name,
+            file: null,
+            entry,
             folderPath: folderPath.slice(),
-            relativePath: folderPath.concat(file.name).join("/"),
+            relativePath: folderPath.concat(entry.name).join("/"),
           });
         }
       }
@@ -1230,8 +1312,33 @@
       picker.removeAttribute("directory");
       picker.setAttribute("multiple", "");
       picker.setAttribute("accept", "audio/mpeg,audio/mp3,audio/*,.mp3");
-      if (pickLabel) pickLabel.textContent = "이 폴더 강의 선택";
-      if (chooseBtn) chooseBtn.textContent = "이 폴더 강의 선택";
+    }
+
+    function changeLabel() {
+      return canRememberFolder ? "강의 폴더 변경" : (isMobile ? "강의 파일 다시 선택" : "강의 폴더 변경");
+    }
+
+    function startLabel() {
+      return isMobile && !canRememberFolder ? "강의 파일 선택하기" : "강의 폴더 선택하기";
+    }
+
+    function confirmReplace() {
+      if (current && !player.paused) {
+        return window.confirm("재생을 멈추고 다른 강의를 여시겠습니까?");
+      }
+      return true;
+    }
+
+    function pickSource() {
+      if (!confirmReplace()) return;
+      if (canRememberFolder) {
+        chooseFolder();
+      } else {
+        summary.textContent = isMobile
+          ? "열 강의 파일(mp3)을 모두 선택하세요."
+          : "선택한 폴더만 읽는 중입니다…";
+        picker.click();
+      }
     }
 
     function openHandleDb() {
@@ -1276,8 +1383,10 @@
       summary.textContent = "지난 폴더를 여는 중입니다…";
       try {
         await openRootHandle(savedHandle);
-        restoreBtn.hidden = true;
+        restorable = false;
       } catch (error) {
+        restorable = true;
+        render();
         summary.textContent = "지난 폴더를 열지 못했습니다. 폴더를 다시 선택해 주세요.";
       }
     }
@@ -1289,7 +1398,7 @@
         savedHandle = handle;
         await writeSavedHandle(handle);
         await openRootHandle(handle);
-        restoreBtn.hidden = true;
+        restorable = false;
       } catch (error) {
         if (error && error.name === "AbortError") {
           summary.textContent = "";
@@ -1317,8 +1426,8 @@
         return;
       }
       if (state === "prompt") {
-        restoreBtn.hidden = false;
-        restoreBtn.textContent = savedHandle.name ? `${savedHandle.name} 열기` : "지난 폴더 열기";
+        restorable = true;
+        render();
       }
     }
 
@@ -1335,11 +1444,53 @@
     }
 
     function renderSummary() {
-      if (!loaded) {
-        summary.textContent = isMobile
-          ? "「이 폴더 강의 선택」으로 지금 들을 폴더의 mp3만 고르세요."
-          : "폴더를 고르면 그 폴더만 읽고, 하위는 들어갈 때 읽습니다.";
+      let text = statusMsg;
+      if (!text && loaded) {
+        const node = nodeAt(path);
+        const files = node.files.length;
+        const dirs = Object.keys(node.dirs).length;
+        const parts = [];
+        if (dirs) parts.push(`폴더 ${dirs}개`);
+        if (files || !dirs) parts.push(`강의 ${files}개`);
+        text = parts.join(" · ");
+      } else if (!text && !loaded) {
+        text = "강의 폴더를 선택해 주세요.";
       }
+      summaryEl.textContent = text;
+    }
+
+    function renderCrumbs() {
+      crumbs.replaceChildren();
+      const show = loaded && path.length > 0;
+      listNav.hidden = !loaded || path.length === 0;
+      if (!show) return;
+      path.forEach((part, index) => {
+        if (index > 0) {
+          const sep = document.createElement("span");
+          sep.className = "sep";
+          sep.textContent = "›";
+          crumbs.append(sep);
+        }
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = part;
+        const target = path.slice(0, index + 1);
+        const isLast = index === path.length - 1;
+        if (isLast || target.length < basePath.length) {
+          btn.disabled = isLast;
+          if (!isLast) btn.style.pointerEvents = "none";
+        } else {
+          btn.addEventListener("click", async () => {
+            path = target;
+            await ensurePathLoaded(path);
+            window.scrollTo(0, 0);
+            render();
+          });
+        }
+        crumbs.append(btn);
+      });
+      const last = crumbs.lastElementChild;
+      if (last && last.scrollIntoView) last.scrollIntoView({ inline: "end", block: "nearest" });
     }
 
     function addRow(parent, className, label, meta, itemPath, onClick) {
@@ -1399,6 +1550,19 @@
 
     let durationActive = 0;
     const durationQueue = [];
+    const durationObserver = "IntersectionObserver" in window
+      ? new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            durationObserver.unobserve(entry.target);
+            const job = entry.target._job;
+            if (job) {
+              durationQueue.push(job);
+              pumpDuration();
+            }
+          }
+        }, { rootMargin: "120px" })
+      : null;
 
     function queueDuration(item, metaEl) {
       if (isMobile) {
@@ -1409,17 +1573,22 @@
         metaEl.textContent = item.durationText;
         return;
       }
-      metaEl.textContent = "…";
-      durationQueue.push({ item, metaEl });
-      pumpDuration();
+      metaEl.textContent = "";
+      metaEl._job = { item, metaEl };
+      if (durationObserver) {
+        durationObserver.observe(metaEl);
+      } else {
+        durationQueue.push(metaEl._job);
+        pumpDuration();
+      }
     }
 
     function pumpDuration() {
-      while (durationActive < 3 && durationQueue.length) {
+      while (durationActive < 2 && durationQueue.length) {
         const job = durationQueue.shift();
         if (!job.metaEl.isConnected) continue;
         durationActive += 1;
-        const task = job.item.durationTask || (job.item.durationTask = readDuration(job.item.file).then((seconds) => {
+        const task = job.item.durationTask || (job.item.durationTask = getItemFile(job.item).then((file) => readDuration(file)).catch(() => NaN).then((seconds) => {
           job.item.durationText = formatDuration(seconds);
           return job.item.durationText;
         }));
@@ -1439,10 +1608,84 @@
         empty.className = "empty";
         const title = document.createElement("strong");
         title.textContent = "강의 폴더를 선택하세요";
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        if (canRememberFolder && restorable && savedHandle) {
+          const text = document.createElement("p");
+          text.textContent = "지난번에 열었던 폴더를 바로 이어서 열 수 있습니다.";
+          const restoreBtn = document.createElement("button");
+          restoreBtn.type = "button";
+          restoreBtn.className = "big-btn";
+          const sub = document.createElement("span");
+          sub.className = "sub";
+          sub.textContent = savedHandle.name ? `「${savedHandle.name}」 이어서 열기` : "지난 폴더 이어서 열기";
+          restoreBtn.append(sub);
+          restoreBtn.addEventListener("click", async () => {
+            let state = "denied";
+            try { state = await savedHandle.requestPermission({ mode: "read" }); } catch (error) {}
+            if (state === "granted") await openSavedHandle();
+          });
+          const other = document.createElement("button");
+          other.type = "button";
+          other.className = "big-btn ghost";
+          other.textContent = "다른 폴더 선택";
+          other.addEventListener("click", pickSource);
+          actions.append(restoreBtn, other);
+          empty.append(title, text, actions);
+        } else if (isMobile && !canRememberFolder) {
+          const text = document.createElement("p");
+          text.textContent = "안드로이드에서는 폴더 대신 강의 파일(mp3)을 직접 고릅니다.";
+          const steps = document.createElement("ol");
+          for (const line of [
+            "아래 버튼을 누릅니다.",
+            "강의가 들어 있는 폴더로 이동합니다.",
+            "파일을 길게 눌러 선택하고, 「모두 선택」 후 「열기」를 누릅니다.",
+          ]) {
+            const li = document.createElement("li");
+            li.textContent = line;
+            steps.append(li);
+          }
+          const startBtn = document.createElement("button");
+          startBtn.type = "button";
+          startBtn.className = "big-btn";
+          startBtn.textContent = startLabel();
+          startBtn.addEventListener("click", pickSource);
+          actions.append(startBtn);
+          empty.append(title, text, steps, actions);
+        } else {
+          const text = document.createElement("p");
+          text.textContent = "폴더를 고르면 그 안의 내용만 먼저 읽고, 하위 폴더는 들어갈 때 읽습니다. 폴더를 이 화면에 끌어다 놓아도 됩니다.";
+          const startBtn = document.createElement("button");
+          startBtn.type = "button";
+          startBtn.className = "big-btn";
+          startBtn.textContent = startLabel();
+          startBtn.addEventListener("click", pickSource);
+          actions.append(startBtn);
+          empty.append(title, text, actions);
+        }
+        list.append(empty);
+        return;
+      }
+
+      if (node.loaded === false) {
+        for (let i = 0; i < 6; i += 1) {
+          const bar = document.createElement("div");
+          bar.className = "skeleton";
+          bar.style.marginBottom = "8px";
+          bar.setAttribute("aria-hidden", "true");
+          list.append(bar);
+        }
+        return;
+      }
+
+      if (!node.files.length && !Object.keys(node.dirs).length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        const title = document.createElement("strong");
+        title.textContent = "이 폴더는 비어 있습니다";
         const text = document.createElement("p");
-        text.textContent = isMobile
-          ? "「이 폴더 강의 선택」으로 지금 볼 폴더의 mp3만 고르세요. 폴더 전체를 한 번에 읽지 않아 USB에서도 바로 열립니다."
-          : "폴더를 고르면 그 안의 내용만 먼저 읽고, 하위 폴더는 들어갈 때 읽습니다.";
+        text.textContent = "하위 폴더나 mp3 파일이 없습니다. 다른 폴더를 선택해 보세요.";
         empty.append(title, text);
         list.append(empty);
         return;
@@ -1451,20 +1694,6 @@
       const folders = sortedFolders(node);
       const files = sortedFiles(node);
       const mixed = folders.length > 0 && files.length > 0;
-
-      if (!folders.length && !files.length) {
-        const empty = document.createElement("div");
-        empty.className = "empty";
-        const title = document.createElement("strong");
-        title.textContent = node.loaded === false ? "폴더를 읽는 중…" : "이 폴더는 비어 있습니다";
-        const text = document.createElement("p");
-        text.textContent = node.loaded === false
-          ? "잠시만 기다려 주세요."
-          : "하위 폴더나 mp3 파일이 없습니다. USB라면 더 안쪽 강의 폴더를 선택해 보세요.";
-        empty.append(title, text);
-        list.append(empty);
-        return;
-      }
 
       if (folders.length) {
         if (mixed) {
@@ -1478,6 +1707,7 @@
         for (const name of folders) {
           addRow(folderList, "dir", name, "", path.concat(name).join("/"), async () => {
             path = path.concat(name);
+            render();
             await ensurePathLoaded(path);
             window.scrollTo(0, 0);
             render();
@@ -1550,17 +1780,27 @@
 
     async function playItem(item) {
       await unlockAudio();
-      if (current && current.file === item.file) {
+      if (current === item) {
         if (player.paused) player.play().catch(() => {});
         applyVolume();
         return;
       }
+      let file;
+      try {
+        file = await getItemFile(item);
+      } catch (error) {
+        nowTitle.textContent = displayName(item.name);
+        nowPath.textContent = "이 파일을 열 수 없습니다. 폴더를 다시 선택해 주세요.";
+        playerBar.hidden = false;
+        return;
+      }
       const files = sortedFiles(nodeAt(item.folderPath));
       currentList = files;
-      currentIndex = files.findIndex((entry) => entry.file === item.file);
+      currentIndex = files.indexOf(item);
       if (currentUrl) URL.revokeObjectURL(currentUrl);
-      currentUrl = URL.createObjectURL(item.file);
+      currentUrl = URL.createObjectURL(file);
       current = item;
+      nowPath.textContent = "";
       player.src = currentUrl;
       applySpeed();
       applyVolume();
@@ -1579,36 +1819,11 @@
       const node = nodeAt(path);
       const canGoUp = loaded && path.length > basePath.length;
       upBtn.hidden = !canGoUp;
+      renderCrumbs();
       renderSummary();
       renderList(node);
       markActive();
     }
-
-    function closeDocument() {
-      try { player.pause(); } catch (error) {}
-      try {
-        player.removeAttribute("src");
-        player.load();
-      } catch (error) {}
-      try {
-        if (currentUrl) URL.revokeObjectURL(currentUrl);
-        currentUrl = "";
-      } catch (error) {}
-      try { window.open("", "_self"); } catch (error) {}
-      try { window.close(); } catch (error) {}
-      try { self.close(); } catch (error) {}
-      setTimeout(() => {
-        if (window.closed) return;
-        try {
-          location.replace("about:blank");
-        } catch (error) {
-          document.open();
-          document.write("<!DOCTYPE html><html lang=\"ko\"><head><meta charset=\"UTF-8\"><title>닫힘</title></head><body style=\"margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Noto Sans KR,sans-serif;background:#F4F1EA;color:#70756B;display:grid;place-items:center;min-height:100vh;\">문서가 종료되었습니다.</body></html>");
-          document.close();
-        }
-      }, 50);
-    }
-    window.closeDocument = closeDocument;
 
     let seeking = false;
 
@@ -1623,8 +1838,8 @@
     function syncPlayerUi() {
       const ready = Boolean(current);
       playBtn.disabled = !ready;
-      stopBtn.disabled = !ready;
       seek.disabled = !ready;
+      playerBar.hidden = !ready && !nowPath.textContent;
       const playing = ready && !player.paused && !player.ended;
       playBtn.replaceChildren();
       if (playing) {
@@ -1648,12 +1863,6 @@
       timeTotal.textContent = clock(Number.isFinite(player.duration) ? player.duration : 0);
       paintSeek();
     }
-
-    filePick.addEventListener("pointerdown", () => {
-      summary.textContent = isMobile
-        ? "이 폴더의 강의 파일만 선택하세요…"
-        : "선택한 폴더만 읽는 중입니다…";
-    });
 
     picker.addEventListener("change", async () => {
       if (!picker.files || !picker.files.length) {
@@ -1679,7 +1888,6 @@
 
     prevBtn.addEventListener("click", () => playDelta(-1));
     nextBtn.addEventListener("click", () => playDelta(1));
-    closeListBtn.addEventListener("click", closeDocument);
     upBtn.addEventListener("click", async () => {
       if (path.length <= basePath.length) return;
       path = path.slice(0, -1);
@@ -1698,14 +1906,6 @@
       } else {
         player.pause();
       }
-    });
-
-    stopBtn.addEventListener("click", () => {
-      if (!current) return;
-      player.pause();
-      player.currentTime = 0;
-      seeking = false;
-      syncPlayerUi();
     });
 
     seek.addEventListener("input", () => {
@@ -1799,6 +1999,7 @@
     applySpeed();
     applyVolume();
     updateTransport();
+    syncPlayerUi();
     render();
 
     if ("serviceWorker" in navigator) {
@@ -1820,18 +2021,35 @@
       try { localStorage.setItem(VOLUME_KEY, String(currentVolume)); } catch (error) {}
     });
 
-    if (canRememberFolder) {
-      filePick.hidden = true;
-      chooseBtn.hidden = false;
-      chooseBtn.addEventListener("click", chooseFolder);
-      restoreBtn.addEventListener("click", async () => {
-        if (!savedHandle) return;
-        const state = await savedHandle.requestPermission({ mode: "read" });
-        if (state !== "granted") return;
-        await openSavedHandle();
-      });
-      restoreSavedFolder();
+    picker.addEventListener("cancel", () => { summary.textContent = ""; });
+    function exitApp() {
+      if (!window.confirm("프로그램을 종료할까요?" + (current && !player.paused ? "\n재생 중인 강의도 멈춥니다." : ""))) return;
+      try { player.pause(); } catch (error) {}
+      try { player.removeAttribute("src"); player.load(); } catch (error) {}
+      try { if (currentUrl) URL.revokeObjectURL(currentUrl); } catch (error) {}
+      currentUrl = "";
+      try { if ("mediaSession" in navigator) navigator.mediaSession.metadata = null; } catch (error) {}
+      try { if (audioCtx) audioCtx.close(); } catch (error) {}
+      try { window.close(); } catch (error) {}
+      setTimeout(() => {
+        const box = document.createElement("div");
+        box.className = "closed-screen";
+        const msg = document.createElement("p");
+        msg.textContent = "종료되었습니다. 앱 화면을 닫아 주세요.";
+        const again = document.createElement("button");
+        again.type = "button";
+        again.className = "big-btn";
+        again.textContent = "다시 시작";
+        again.addEventListener("click", () => location.reload());
+        box.append(msg, again);
+        document.body.replaceChildren(box);
+      }, 150);
     }
+    document.getElementById("exitBtn").addEventListener("click", exitApp);
+
+    changeBtn.textContent = changeLabel();
+    changeBtn.addEventListener("click", pickSource);
+    if (canRememberFolder) restoreSavedFolder();
   </script>
 </body>
 </html>

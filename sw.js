@@ -1,4 +1,4 @@
-const CACHE = "ezra-bible-v2";
+const CACHE = "ezra-bible-v3";
 const ASSETS = [
   "./",
   "./index.html",
