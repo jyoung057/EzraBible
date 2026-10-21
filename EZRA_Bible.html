@@ -49,6 +49,10 @@
     }
 
     .wrap {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-height: 100dvh;
       width: min(760px, 100%);
       margin: 0 auto;
       padding: 20px 16px 28px;
@@ -678,22 +682,67 @@
     }
 
     .exit-row {
-      margin-top: 40px;
-      padding-top: 20px;
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: auto;
+      padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
       border-top: 1px solid var(--line);
-      display: flex;
-      justify-content: center;
+      background: var(--bg);
     }
 
+    .home-btn {
+      min-height: 52px;
+      padding: 0 16px;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--on-accent);
+      font: inherit;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .home-panel[hidden] { display: none !important; }
+
+    .home-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 6px 0 18px;
+    }
+
+    .home-choice {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 76px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--bg-elev);
+      color: var(--ink);
+      font: inherit;
+      font-size: 1.3rem;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+
+    .home-choice:active { background: var(--accent-soft); }
+
     .exit-btn {
-      min-height: 48px;
-      padding: 0 28px;
+      min-height: 52px;
+      padding: 0 16px;
       border: 1px solid #c62828;
       border-radius: 999px;
       background: var(--bg-elev);
       color: #c62828;
       font: inherit;
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       font-weight: 700;
       cursor: pointer;
     }
@@ -706,6 +755,221 @@
       padding: 24px;
       text-align: center;
       color: var(--muted);
+    }
+
+    .canon-bar {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      gap: 8px;
+      margin: 0 0 14px;
+    }
+    .canon-btn {
+      min-height: 48px;
+      padding: 0 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--bg-elev);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .canon-btn[hidden] { display: none !important; }
+    .canon-btn.is-on {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--on-accent);
+    }
+    .hymn-panel[hidden] { display: none !important; }
+    #list[hidden] { display: none !important; }
+    .hymn-search {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0 0 10px;
+      padding: 4px 6px 4px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--bg-elev);
+    }
+    .hymn-search:focus-within { border-color: var(--accent); }
+    .hymn-search input {
+      flex: 1;
+      min-width: 0;
+      height: 44px;
+      padding: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      font-size: 16px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .hymn-search input::-webkit-search-cancel-button { display: none; }
+    .hymn-search input::placeholder { color: var(--muted); }
+    .hs-btn {
+      flex: none;
+      min-width: 44px;
+      height: 40px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .hs-btn[hidden] { display: none !important; }
+    .hymn-tools-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 12px;
+    }
+    .hymn-store-info {
+      flex: 1 1 100%;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .small-btn {
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--bg-elev);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .small-btn[hidden] { display: none !important; }
+    .small-btn.primary {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--on-accent);
+    }
+    .small-btn.danger { color: #c62828; border-color: #e3b8b8; }
+    .row.is-missing .name { opacity: 0.5; }
+    .row.is-missing .meta { color: #b0553f; }
+    .fine-toggle {
+      width: 100%;
+      min-height: 44px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--bg-elev);
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .sliders[hidden] { display: none !important; }
+    body.hymn-open { overflow: hidden; }
+    .hymn-viewer {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      background: #111;
+      color: #fff;
+    }
+    .hymn-viewer[hidden] { display: none !important; }
+    .hymn-viewer-top {
+      flex: none;
+      padding: 12px 12px 8px;
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.45;
+      word-break: keep-all;
+    }
+    .hymn-tools {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .hymn-tools button {
+      min-height: 44px;
+      border: 0;
+      border-radius: 12px;
+      background: #2a2a2a;
+      color: #fff;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .hymn-tools button:disabled { opacity: 0.4; cursor: default; }
+    #hymnAudio { padding: 0 14px; min-width: 0; }
+    .hv-zoom {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .hv-zoom button { width: 44px; font-size: 1.2rem; }
+    .hv-zoom span { min-width: 3.2em; text-align: center; }
+    .hymn-viewer-stage {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 8px 12px 16px;
+      background: #111;
+      touch-action: pan-x pan-y;
+      overscroll-behavior: contain;
+    }
+    .hymn-viewer-stage img {
+      display: block;
+      width: min(920px, 100%);
+      max-width: none;
+      height: auto;
+      margin: 0 auto;
+      background: #fff;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .hymn-viewer-stage img[hidden] { display: none !important; }
+    .hymn-viewer-msg {
+      margin: 28px auto;
+      max-width: 24rem;
+      text-align: center;
+      color: #ddd;
+      line-height: 1.6;
+    }
+    .hymn-viewer-bar {
+      flex: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+      background: #111;
+    }
+    .hymn-viewer-bar button {
+      min-height: 52px;
+      border: 0;
+      border-radius: 12px;
+      background: #fff;
+      color: #111;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .hymn-viewer-bar button:disabled {
+      opacity: 0.35;
+      cursor: default;
     }
 
     :focus-visible {
@@ -753,7 +1017,8 @@
               </button>
             </div>
           </div>
-          <div class="sliders">
+          <button type="button" id="fineToggle" class="fine-toggle" aria-expanded="false" aria-controls="sliders"></button>
+          <div class="sliders" id="sliders" hidden>
             <div class="slider-row">
               <label for="speed">배속</label>
               <input id="speed" type="range" min="0.5" max="2" step="0.05" value="1" aria-label="배속">
@@ -775,14 +1040,55 @@
     <div class="list-nav" id="listNav" hidden>
       <button type="button" id="upBtn" class="up-btn" hidden>← 상위</button>
       <nav class="crumbs" id="crumbs" aria-label="현재 위치"></nav>
-      <input id="picker" type="file" webkitdirectory directory multiple accept=".mp3,audio/mpeg" hidden>
+      <input id="picker" type="file" webkitdirectory directory multiple accept=".mp3,audio/mpeg,.jpg,.jpeg,.png,.gif,.webp,.bmp,image/*" hidden>
     </div>
+    <section id="homePanel" class="home-panel" hidden></section>
     <main id="list"></main>
+    <section id="hymnPanel" class="hymn-panel" hidden>
+      <form id="hymnSearch" class="hymn-search" role="search">
+        <input id="hymnQuery" type="search" inputmode="search" placeholder="장 번호 또는 제목" autocomplete="off" autocapitalize="off" enterkeyhint="search" aria-label="찬송가 검색">
+        <button type="button" id="hymnClear" class="hs-btn" aria-label="검색어 지우기" hidden>✕</button>
+        <button type="button" id="hymnKeys" class="hs-btn" aria-label="숫자 키패드로 전환">123</button>
+      </form>
+      <div class="hymn-tools-row">
+        <div id="hymnStoreInfo" class="hymn-store-info"></div>
+        <button type="button" id="hymnImportBtn" class="small-btn primary">악보 가져오기</button>
+        <button type="button" id="hymnSaveBtn" class="small-btn" hidden>열린 폴더 악보 저장</button>
+        <button type="button" id="hymnWipeBtn" class="small-btn danger" hidden>저장 악보 삭제</button>
+      </div>
+      <div id="hymnNotice"></div>
+      <div id="hymnList" class="hymn-list"></div>
+      <input id="hymnImportInput" type="file" accept="image/*,.jpg,.jpeg,.png,.gif,.webp,.bmp" multiple hidden>
+    </section>
+    <div id="hymnViewer" class="hymn-viewer" hidden>
+      <div class="hymn-viewer-top">
+        <div id="hymnViewerTitle"></div>
+        <div class="hymn-tools">
+          <button type="button" id="hymnAudio" disabled>강의 없음</button>
+          <div class="hv-zoom">
+            <button type="button" id="hymnZoomOut" aria-label="축소">−</button>
+            <span id="hymnZoomVal">100%</span>
+            <button type="button" id="hymnZoomIn" aria-label="확대">＋</button>
+          </div>
+        </div>
+      </div>
+      <div id="hymnViewerStage" class="hymn-viewer-stage">
+        <img id="hymnImage" alt="" hidden draggable="false">
+        <p id="hymnViewerMsg" class="hymn-viewer-msg" hidden></p>
+      </div>
+      <div class="hymn-viewer-bar">
+        <button type="button" id="hymnPrev">이전 장</button>
+        <button type="button" id="hymnClose">닫기</button>
+        <button type="button" id="hymnNext">다음 장</button>
+      </div>
+    </div>
     <div class="exit-row">
+      <button type="button" id="homeBtn" class="home-btn">홈으로</button>
       <button type="button" id="exitBtn" class="exit-btn">프로그램 종료</button>
     </div>
   </div>
 
+  <script src="./hymns.js"></script>
   <script>
     const SPEED_KEY = "lecture-speed";
     const VOLUME_KEY = "lecture-volume";
@@ -844,6 +1150,36 @@
     let currentIndex = -1;
     let currentUrl = "";
     let dragDepth = 0;
+    let viewMode = "home";
+    let homeForced = false;
+    let listBuilding = false;
+    let hymnImages = new Map();
+    let hymnIndexTask = null;
+    let hymnSearchText = "";
+    let hymnViewIndex = -1;
+    let hymnObjectUrl = "";
+    let hymnStored = new Set();
+    let hymnNavList = [];
+    let hymnZoom = 1;
+    let hymnRenderToken = 0;
+    let hymnNumeric = false;
+    let hymnSearchTimer = 0;
+    let hymnBusy = false;
+    let hymnShowToken = 0;
+    const HYMN_BOOK = (typeof HYMNS !== "undefined" && Array.isArray(HYMNS)) ? HYMNS : [];
+    const homePanel = document.getElementById("homePanel");
+    const homeBtn = document.getElementById("homeBtn");
+    const hymnSearch = document.getElementById("hymnSearch");
+    const hymnQuery = document.getElementById("hymnQuery");
+    const hymnList = document.getElementById("hymnList");
+    const hymnViewer = document.getElementById("hymnViewer");
+    const hymnViewerTitle = document.getElementById("hymnViewerTitle");
+    const hymnViewerStage = document.getElementById("hymnViewerStage");
+    const hymnImage = document.getElementById("hymnImage");
+    const hymnViewerMsg = document.getElementById("hymnViewerMsg");
+    const hymnPrev = document.getElementById("hymnPrev");
+    const hymnNext = document.getElementById("hymnNext");
+    const hymnClose = document.getElementById("hymnClose");
 
     function emptyDir() {
       return { dirs: Object.create(null), files: [], loaded: true };
@@ -925,7 +1261,7 @@
     }
 
     function sortedFolders(node) {
-      return Object.keys(node.dirs).sort(collate);
+      return Object.keys(node.dirs).filter((name) => !isHymnDirName(name)).sort(collate);
     }
 
     function sortedFiles(node) {
@@ -954,6 +1290,7 @@
       speed.value = String(currentSpeed);
       speedValue.textContent = formatSpeed(currentSpeed);
       paintRange(speed);
+      updateFineLabel();
     }
 
     function ensureAudioGraph() {
@@ -993,6 +1330,7 @@
       volume.value = String(currentVolume);
       volumeValue.textContent = formatVolume(currentVolume);
       paintRange(volume);
+      updateFineLabel();
       if (gainNode) {
         gainNode.gain.value = currentVolume;
         player.volume = 1;
@@ -1039,8 +1377,10 @@
       browseMode = "tree";
       handleMap = new Map();
       root = emptyDir();
+      resetHymnLibrary();
       let added = 0;
       for (const item of items) {
+        if (takeHymnItem(item)) continue;
         if (addTreeItem(item)) added += 1;
       }
       total = added;
@@ -1053,6 +1393,7 @@
 
     async function loadItemsProgressive(fileList) {
       const token = ++loadToken;
+      listBuilding = true;
       browseMode = "tree";
       handleMap = new Map();
       root = emptyDir();
@@ -1060,13 +1401,17 @@
       total = 0;
       basePath = [];
       path = [];
+      resetHymnLibrary();
       resetPlayback();
       summary.textContent = "목록을 만드는 중입니다…";
       render();
 
       const files = [];
       for (const file of fileList) {
-        if (!isMp3(file.name) || file.name.startsWith("._")) continue;
+        if (!file.name || file.name.startsWith("._")) continue;
+        const rel = file.webkitRelativePath || file.name;
+        if (takeHymnItem({ name: file.name, file, relativePath: rel })) continue;
+        if (!isMp3(file.name)) continue;
         files.push(file);
       }
 
@@ -1096,6 +1441,7 @@
         }
       }
       if (token !== loadToken) return;
+      listBuilding = false;
       total = added;
       basePath = defaultBase();
       path = basePath.slice();
@@ -1129,8 +1475,12 @@
     async function collect(entry, entryPath) {
       if (entry.isFile) {
         const file = await entryFile(entry);
-        if (!isMp3(file.name) || file.name.startsWith("._")) return [];
-        return [{ name: file.name, file, relativePath: entryPath }];
+        if (!file.name || file.name.startsWith("._")) return [];
+        if (isMp3(file.name)) return [{ name: file.name, file, relativePath: entryPath }];
+        if (isImageName(file.name) && isUnderHymm(entryPath)) {
+          return [{ name: file.name, file, relativePath: entryPath }];
+        }
+        return [];
       }
       const reader = entry.createReader();
       const items = [];
@@ -1233,6 +1583,7 @@
       handleMap = new Map();
       entryMap = new Map();
       root = emptyDir();
+      resetHymnLibrary();
       const topPath = [dirHandle.name];
       const top = emptyDir();
       top.loaded = false;
@@ -1257,6 +1608,7 @@
       handleMap = new Map();
       entryMap = new Map();
       root = emptyDir();
+      resetHymnLibrary();
       const topPath = [dirEntry.name];
       const top = emptyDir();
       top.loaded = false;
@@ -1281,6 +1633,7 @@
       handleMap = new Map();
       entryMap = new Map();
       root = emptyDir();
+      resetHymnLibrary();
       const folderName = "선택한 강의";
       const folderPath = [folderName];
       const node = getDir(folderPath);
@@ -1445,10 +1798,18 @@
 
     function renderSummary() {
       let text = statusMsg;
-      if (!text && loaded) {
+      if (!text && viewMode === "home" && loaded) {
+        text = "보고 싶은 항목을 선택하세요.";
+      } else if (!text && viewMode === "hymn") {
+        const shown = filteredHymns().length;
+        const have = HYMN_BOOK.filter((hymn) => hymnHas(hymn.n)).length;
+        text = hymnSearchText.trim()
+          ? `검색 결과 ${shown}장`
+          : `찬송가 ${HYMN_BOOK.length}장 · 악보 ${have}장`;
+      } else if (!text && loaded) {
         const node = nodeAt(path);
         const files = node.files.length;
-        const dirs = Object.keys(node.dirs).length;
+        const dirs = Object.keys(node.dirs).filter((name) => !isHymnDirName(name)).length;
         const parts = [];
         if (dirs) parts.push(`폴더 ${dirs}개`);
         if (files || !dirs) parts.push(`강의 ${files}개`);
@@ -1482,6 +1843,7 @@
         } else {
           btn.addEventListener("click", async () => {
             path = target;
+            pushNav();
             await ensurePathLoaded(path);
             window.scrollTo(0, 0);
             render();
@@ -1679,20 +2041,25 @@
         return;
       }
 
-      if (!node.files.length && !Object.keys(node.dirs).length) {
+      const folders = sortedFolders(node);
+      const files = sortedFiles(node);
+
+      if (!folders.length && !files.length) {
         const empty = document.createElement("div");
         empty.className = "empty";
+        const hymnOnly = path.length === basePath.length && hymmAvailable();
         const title = document.createElement("strong");
-        title.textContent = "이 폴더는 비어 있습니다";
+        title.textContent = hymnOnly
+          ? "위에서 구약, 신약 또는 찬송가를 선택하세요"
+          : "이 폴더는 비어 있습니다";
         const text = document.createElement("p");
-        text.textContent = "하위 폴더나 mp3 파일이 없습니다. 다른 폴더를 선택해 보세요.";
+        text.textContent = hymnOnly
+          ? "찬송가를 누르면 장 목록이 나옵니다. 장을 누르면 악보 이미지가 열립니다."
+          : "하위 폴더나 mp3 파일이 없습니다. 다른 폴더를 선택해 보세요.";
         empty.append(title, text);
         list.append(empty);
         return;
       }
-
-      const folders = sortedFolders(node);
-      const files = sortedFiles(node);
       const mixed = folders.length > 0 && files.length > 0;
 
       if (folders.length) {
@@ -1707,6 +2074,7 @@
         for (const name of folders) {
           addRow(folderList, "dir", name, "", path.concat(name).join("/"), async () => {
             path = path.concat(name);
+            pushNav();
             render();
             await ensurePathLoaded(path);
             window.scrollTo(0, 0);
@@ -1815,7 +2183,591 @@
       playItem(currentList[nextIndex]);
     }
 
+    /* ================= 찬송가 ================= */
+    const HYMN_DIR_NAMES = ["hymm", "hymn", "hymns", "찬송가", "찬송"];
+    const hymnPanel = document.getElementById("hymnPanel");
+    const hymnClear = document.getElementById("hymnClear");
+    const hymnKeys = document.getElementById("hymnKeys");
+    const hymnStoreInfo = document.getElementById("hymnStoreInfo");
+    const hymnImportBtn = document.getElementById("hymnImportBtn");
+    const hymnSaveBtn = document.getElementById("hymnSaveBtn");
+    const hymnWipeBtn = document.getElementById("hymnWipeBtn");
+    const hymnNotice = document.getElementById("hymnNotice");
+    const hymnImportInput = document.getElementById("hymnImportInput");
+    const hymnAudio = document.getElementById("hymnAudio");
+    const hymnZoomIn = document.getElementById("hymnZoomIn");
+    const hymnZoomOut = document.getElementById("hymnZoomOut");
+    const hymnZoomVal = document.getElementById("hymnZoomVal");
+    const fineToggle = document.getElementById("fineToggle");
+    const slidersBox = document.getElementById("sliders");
+    const HYMN_NUMBERS = new Set(HYMN_BOOK.map((hymn) => hymn.n));
+
+    function isHymnDirName(name) {
+      return HYMN_DIR_NAMES.includes(String(name || "").toLowerCase());
+    }
+    function hymmDirName() {
+      return Object.keys(nodeAt(basePath).dirs).find((name) => isHymnDirName(name)) || "";
+    }
+    function hymmAvailable() {
+      return Boolean(hymmDirName()) || hymnImages.size > 0 || hymnStored.size > 0;
+    }
+    function findCanonDir(label) {
+      const names = Object.keys(nodeAt(basePath).dirs);
+      return names.find((name) => name === label)
+        || names.find((name) => name.includes(label))
+        || "";
+    }
+    function isInCanon(label) {
+      const name = findCanonDir(label);
+      return Boolean(name) && path[basePath.length] === name;
+    }
+    function isImageName(name) {
+      return /\.(jpe?g|png|gif|webp|bmp|avif|heic|heif)$/i.test(name);
+    }
+    function isUnderHymm(relativePath) {
+      const parts = splitPath(relativePath);
+      if (parts.length < 2) return false;
+      return parts.slice(0, -1).some((part) => isHymnDirName(part));
+    }
+    function chapterFromName(filename) {
+      const stem = String(filename || "").replace(/\.[^.]+$/i, "").trim();
+      if (!/^\d+$/.test(stem)) return null;
+      const n = Number(stem);
+      if (!Number.isInteger(n) || n < 1 || n > 9999) return null;
+      return n;
+    }
+    function stemLen(name) {
+      return String(name || "").replace(/\.[^.]+$/i, "").length;
+    }
+    function rememberHymnImage(n, item) {
+      const prev = hymnImages.get(n);
+      if (!prev || stemLen(item.name) < stemLen(prev.name)) hymnImages.set(n, item);
+    }
+    function takeHymnItem(item) {
+      const name = item && item.name ? item.name : "";
+      const rel = item && item.relativePath ? item.relativePath : name;
+      if (!name || name.startsWith(".") || !isUnderHymm(rel) || !isImageName(name)) return false;
+      const n = chapterFromName(name);
+      if (n == null) return false;
+      rememberHymnImage(n, {
+        name,
+        file: item.file || null,
+        handle: item.handle || null,
+        entry: item.entry || null,
+        relativePath: rel,
+      });
+      return true;
+    }
+    function hymnHas(n) {
+      return hymnStored.has(n) || hymnImages.has(n);
+    }
+
+    /* ---- 기기 저장소(IndexedDB) ---- */
+    function openHymnDb() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open("lecture-hymns", 1);
+        request.onupgradeneeded = () => request.result.createObjectStore("images");
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async function hymnDbRun(mode, work) {
+      const db = await openHymnDb();
+      try {
+        return await new Promise((resolve, reject) => {
+          const tx = db.transaction("images", mode);
+          let out;
+          try { out = work(tx.objectStore("images")); } catch (error) { reject(error); return; }
+          tx.oncomplete = () => resolve(out && typeof out === "object" && "result" in out ? out.result : out);
+          tx.onerror = () => reject(tx.error);
+          tx.onabort = () => reject(tx.error || new Error("저장 취소"));
+        });
+      } finally {
+        db.close();
+      }
+    }
+    async function loadStoredHymns() {
+      try {
+        const keys = await hymnDbRun("readonly", (store) => store.getAllKeys());
+        hymnStored = new Set((keys || []).map(Number));
+      } catch (error) {
+        hymnStored = new Set();
+      }
+      render();
+    }
+    async function getStoredHymn(n) {
+      const record = await hymnDbRun("readonly", (store) => store.get(n));
+      return record && record.blob ? record.blob : null;
+    }
+    async function getHymnFile(n) {
+      if (hymnStored.has(n)) {
+        try {
+          const blob = await getStoredHymn(n);
+          if (blob) return blob;
+        } catch (error) { /* 아래에서 열린 폴더의 파일을 시도합니다. */ }
+      }
+      const item = hymnImages.get(n);
+      return item ? getItemFile(item) : null;
+    }
+    async function importHymnFiles(files) {
+      if (hymnBusy) return;
+      hymnBusy = true;
+      try {
+        const best = new Map();
+        let skipped = 0;
+        for (const file of files) {
+          const n = chapterFromName(file.name);
+          if (n == null || !isImageName(file.name) || !HYMN_NUMBERS.has(n)) { skipped += 1; continue; }
+          const prev = best.get(n);
+          if (!prev || stemLen(file.name) < stemLen(prev.name)) best.set(n, file);
+        }
+        const entries = Array.from(best.entries());
+        if (!entries.length) {
+          summary.textContent = "장 번호로 된 이미지 파일(예: 1.jpg, 001.png)을 찾지 못했습니다.";
+          return;
+        }
+        try { if (navigator.storage && navigator.storage.persist) await navigator.storage.persist(); } catch (error) {}
+        const BATCH = 20;
+        let done = 0;
+        for (let i = 0; i < entries.length; i += BATCH) {
+          const part = entries.slice(i, i + BATCH);
+          summary.textContent = `악보 저장 중… ${done}/${entries.length}`;
+          await hymnDbRun("readwrite", (store) => {
+            for (const [n, file] of part) store.put({ name: file.name, blob: file }, n);
+          });
+          for (const [n] of part) hymnStored.add(n);
+          done += part.length;
+          await yieldUi();
+        }
+        summary.textContent = skipped
+          ? `${done}장을 저장했습니다. (번호를 알 수 없는 ${skipped}개는 건너뜀)`
+          : `${done}장을 저장했습니다.`;
+        render();
+      } catch (error) {
+        const full = error && (error.name === "QuotaExceededError" || /quota/i.test(String(error.message)));
+        summary.textContent = full
+          ? "저장 공간이 부족합니다. 기기 저장 공간을 확보한 뒤 다시 시도해 주세요."
+          : "악보를 저장하지 못했습니다. 다시 시도해 주세요.";
+        loadStoredHymns();
+      } finally {
+        hymnBusy = false;
+      }
+    }
+    async function saveSessionHymns() {
+      const files = [];
+      summary.textContent = "열린 폴더의 악보를 읽는 중입니다…";
+      for (const [n, item] of hymnImages) {
+        if (hymnStored.has(n)) continue;
+        try { files.push(await getItemFile(item)); } catch (error) {}
+      }
+      await importHymnFiles(files);
+    }
+    async function wipeHymns() {
+      if (!window.confirm("이 기기에 저장된 찬송가 악보를 모두 삭제할까요?")) return;
+      try {
+        await hymnDbRun("readwrite", (store) => store.clear());
+        hymnStored = new Set();
+        summary.textContent = "저장된 악보를 삭제했습니다.";
+      } catch (error) {
+        summary.textContent = "삭제하지 못했습니다.";
+      }
+      render();
+    }
+
+    /* ---- 뒤로가기(이력) ---- */
+    function pathExists(parts) {
+      let node = root;
+      for (const part of parts) {
+        if (!node.dirs[part]) return false;
+        node = node.dirs[part];
+      }
+      return true;
+    }
+    function navSnap() {
+      return { mode: viewMode, path: path.slice(), hv: hymnViewIndex };
+    }
+    function pushNav() {
+      try { history.pushState(navSnap(), ""); } catch (error) {}
+    }
+    function replaceNav() {
+      try { history.replaceState(navSnap(), ""); } catch (error) {}
+    }
+    window.addEventListener("popstate", async (event) => {
+      const st = event.state || { mode: "lectures", path: basePath.slice(), hv: -1 };
+      if (!hymnViewer.hidden && !(st.hv >= 0)) closeHymnViewer();
+      viewMode = st.mode === "hymn" ? "hymn" : (st.mode === "home" ? "home" : "lectures");
+      if (viewMode === "home") homeForced = true;
+      let target = Array.isArray(st.path) ? st.path.slice() : basePath.slice();
+      if (target.length < basePath.length || !pathExists(target)) target = basePath.slice();
+      path = target;
+      try { await ensurePathLoaded(path); } catch (error) {}
+      render();
+      if (st.hv >= 0 && hymnViewer.hidden && hymnNavList[st.hv]) showHymnViewer(st.hv, true);
+    });
+    function requestCloseViewer() {
+      if (hymnViewer.hidden) return;
+      if (history.state && history.state.hv >= 0) history.back();
+      else closeHymnViewer();
+    }
+
+    /* ---- 악보 보기 ---- */
+    function resetHymnZoom() {
+      hymnZoom = 1;
+      hymnImage.style.width = "";
+      hymnZoomVal.textContent = "100%";
+    }
+    function setHymnZoom(next, cx, cy) {
+      const old = hymnZoom;
+      const z = Math.max(1, Math.min(5, Math.round(next * 100) / 100));
+      if (z === old) return;
+      const stage = hymnViewerStage;
+      const px = cx == null ? stage.clientWidth / 2 : cx;
+      const py = cy == null ? stage.clientHeight / 2 : cy;
+      const ratio = z / old;
+      hymnZoom = z;
+      hymnImage.style.width = z === 1 ? "" : `calc(min(920px, 100%) * ${z})`;
+      stage.scrollLeft = (stage.scrollLeft + px) * ratio - px;
+      stage.scrollTop = (stage.scrollTop + py) * ratio - py;
+      hymnZoomVal.textContent = `${Math.round(z * 100)}%`;
+    }
+    function closeHymnViewer() {
+      hymnShowToken += 1;
+      hymnViewIndex = -1;
+      hymnViewer.hidden = true;
+      document.body.classList.remove("hymn-open");
+      hymnImage.hidden = true;
+      hymnImage.removeAttribute("src");
+      hymnViewerMsg.hidden = true;
+      resetHymnZoom();
+      if (hymnObjectUrl) {
+        URL.revokeObjectURL(hymnObjectUrl);
+        hymnObjectUrl = "";
+      }
+    }
+    function resetHymnLibrary() {
+      viewMode = "home";
+      homeForced = false;
+      hymnImages = new Map();
+      hymnIndexTask = null;
+      hymnSearchText = "";
+      hymnQuery.value = "";
+      hymnClear.hidden = true;
+      closeHymnViewer();
+    }
+    function indexHymnImages() {
+      if (!hymnIndexTask) {
+        hymnIndexTask = scanHymnDir().catch((error) => {
+          hymnIndexTask = null;
+          throw error;
+        });
+      }
+      return hymnIndexTask;
+    }
+    async function scanHymnDir() {
+      if (browseMode !== "handle" && browseMode !== "entry") return;
+      const hymmName = hymmDirName();
+      if (!hymmName) return;
+      const key = basePath.concat(hymmName).join("/");
+      const found = new Map();
+      const put = (n, item) => {
+        const prev = found.get(n);
+        if (!prev || stemLen(item.name) < stemLen(prev.name)) found.set(n, item);
+      };
+      async function walkHandle(dirHandle) {
+        for await (const [name, child] of dirHandle.entries()) {
+          if (!name || name.startsWith(".")) continue;
+          if (child.kind === "directory") {
+            await walkHandle(child);
+          } else if (child.kind === "file" && isImageName(name)) {
+            const n = chapterFromName(name);
+            if (n != null) put(n, { name, file: null, handle: child });
+          }
+        }
+      }
+      async function walkEntry(dirEntry) {
+        const entries = await readDirEntries(dirEntry);
+        for (const child of entries) {
+          if (!child.name || child.name.startsWith(".")) continue;
+          if (child.isDirectory) {
+            await walkEntry(child);
+          } else if (child.isFile && isImageName(child.name)) {
+            const n = chapterFromName(child.name);
+            if (n != null) put(n, { name: child.name, file: null, entry: child });
+          }
+        }
+      }
+      if (browseMode === "handle") {
+        const handle = handleMap.get(key);
+        if (!handle) return;
+        await walkHandle(handle);
+      } else {
+        const entry = entryMap.get(key);
+        if (!entry) return;
+        await walkEntry(entry);
+      }
+      hymnImages = found;
+    }
+    function filteredHymns() {
+      const q = hymnSearchText.trim();
+      if (!q) return HYMN_BOOK;
+      const compact = q.replace(/\s+/g, "");
+      const numText = compact.endsWith("장") ? compact.slice(0, -1) : compact;
+      const asNum = /^\d+$/.test(numText) ? Number(numText) : null;
+      const rows = HYMN_BOOK.filter((hymn) => {
+        if (asNum != null && (hymn.n === asNum || String(hymn.n).startsWith(numText))) return true;
+        const title = String(hymn.title);
+        return title.includes(q) || title.replace(/\s+/g, "").includes(compact);
+      });
+      if (asNum != null) rows.sort((a, b) => (b.n === asNum) - (a.n === asNum));
+      return rows;
+    }
+    function updateHymnPanel() {
+      const have = HYMN_BOOK.filter((hymn) => hymnHas(hymn.n)).length;
+      hymnStoreInfo.textContent = hymnStored.size
+        ? `이 기기에 저장된 악보 ${hymnStored.size}장`
+        : "아직 이 기기에 저장된 악보가 없습니다.";
+      hymnWipeBtn.hidden = hymnStored.size === 0;
+      hymnSaveBtn.hidden = !Array.from(hymnImages.keys()).some((n) => !hymnStored.has(n));
+      hymnNotice.replaceChildren();
+      if (have === 0) {
+        const box = document.createElement("div");
+        box.className = "empty";
+        box.style.margin = "0 0 14px";
+        const title = document.createElement("strong");
+        title.textContent = "찬송가 악보가 없습니다";
+        const text = document.createElement("p");
+        text.textContent = "「악보 가져오기」를 눌러 악보 이미지(1.jpg, 2.jpg … 장 번호가 파일명)를 선택하세요. 한 번 가져오면 이 기기에 저장되어 다시 고르지 않아도 되고, 인터넷 없이도 열립니다. 한 번에 고를 수 있는 수가 제한되면 나누어 여러 번 가져오세요. 이미 저장된 장은 그대로 유지됩니다.";
+        box.append(title, text);
+        hymnNotice.append(box);
+      }
+    }
+    function renderHymnList() {
+      const token = ++hymnRenderToken;
+      hymnList.replaceChildren();
+      if (!HYMN_BOOK.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        const title = document.createElement("strong");
+        title.textContent = "찬송가 목록을 불러오지 못했습니다";
+        empty.append(title);
+        hymnList.append(empty);
+        return;
+      }
+      const rows = filteredHymns();
+      if (!rows.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        const title = document.createElement("strong");
+        title.textContent = "검색 결과가 없습니다";
+        const text = document.createElement("p");
+        text.textContent = "다른 장 번호나 제목으로 다시 검색해 보세요.";
+        empty.append(title, text);
+        hymnList.append(empty);
+        return;
+      }
+      const fileList = document.createElement("div");
+      fileList.className = "list files";
+      hymnList.append(fileList);
+      let i = 0;
+      const addChunk = () => {
+        if (token !== hymnRenderToken) return;
+        const end = Math.min(i + 100, rows.length);
+        for (; i < end; i += 1) {
+          const hymn = rows[i];
+          const has = hymnHas(hymn.n);
+          addRow(fileList, has ? "file" : "file is-missing", `${hymn.n}장 ${hymn.title}`, has ? "" : "악보 없음", `hymn:${hymn.n}`, () => {
+            openHymnNumber(hymn.n);
+          });
+        }
+        if (i < rows.length) requestAnimationFrame(addChunk);
+      };
+      addChunk();
+    }
+    async function openHymnView() {
+      if (viewMode !== "hymn") {
+        closeHymnViewer();
+        viewMode = "hymn";
+        pushNav();
+      }
+      render();
+      window.scrollTo(0, 0);
+      if (hymmDirName() && !hymnIndexTask) {
+        summary.textContent = "찬송가 이미지를 읽는 중입니다…";
+        try {
+          await indexHymnImages();
+        } catch (error) {
+          summary.textContent = "찬송가 이미지를 읽지 못했습니다.";
+          render();
+          return;
+        }
+        summary.textContent = "";
+        if (viewMode === "hymn") render();
+      }
+    }
+    function goHome() {
+      if (current && !player.paused && !window.confirm("재생 중인 강의를 멈추고 홈으로 갈까요?")) return;
+      resetPlayback();
+      closeHymnViewer();
+      path = basePath.slice();
+      summary.textContent = "";
+      const changed = viewMode !== "home";
+      viewMode = "home";
+      homeForced = true;
+      if (changed) pushNav();
+      render();
+      window.scrollTo(0, 0);
+    }
+    function openLectures() {
+      if (viewMode !== "lectures") {
+        closeHymnViewer();
+        viewMode = "lectures";
+        pushNav();
+      }
+      render();
+      window.scrollTo(0, 0);
+    }
+    async function openCanon(label) {
+      closeHymnViewer();
+      viewMode = "lectures";
+      const name = findCanonDir(label);
+      if (!name) {
+        summary.textContent = `${label} 폴더를 찾지 못했습니다.`;
+        path = basePath.slice();
+        render();
+        return;
+      }
+      summary.textContent = "";
+      path = basePath.concat(name);
+      pushNav();
+      render();
+      await ensurePathLoaded(path);
+      window.scrollTo(0, 0);
+      render();
+    }
+    async function openHymnNumber(n) {
+      if (hymmDirName() && !hymnIndexTask) {
+        try { await indexHymnImages(); } catch (error) {}
+      }
+      hymnNavList = filteredHymns();
+      const index = hymnNavList.findIndex((hymn) => hymn.n === n);
+      if (index < 0) return;
+      showHymnViewer(index);
+    }
+    async function showHymnViewer(index, fromNav) {
+      const hymn = hymnNavList[index];
+      if (!hymn) return;
+      const token = ++hymnShowToken;
+      const wasHidden = hymnViewer.hidden;
+      hymnViewIndex = index;
+      hymnViewer.hidden = false;
+      document.body.classList.add("hymn-open");
+      if (!fromNav) {
+        if (wasHidden) pushNav();
+        else replaceNav();
+      }
+      resetHymnZoom();
+      hymnViewerTitle.textContent = `${hymn.n}장 ${hymn.title}`;
+      hymnPrev.disabled = index <= 0;
+      hymnNext.disabled = index >= hymnNavList.length - 1;
+      hymnImage.hidden = true;
+      hymnImage.removeAttribute("src");
+      hymnViewerMsg.hidden = false;
+      hymnViewerMsg.textContent = "이미지를 불러오는 중입니다…";
+      hymnViewerStage.scrollTop = 0;
+      hymnViewerStage.scrollLeft = 0;
+      syncHymnAudio();
+      if (hymnObjectUrl) {
+        URL.revokeObjectURL(hymnObjectUrl);
+        hymnObjectUrl = "";
+      }
+      try {
+        const file = await getHymnFile(hymn.n);
+        if (token !== hymnShowToken) return;
+        if (!file) {
+          hymnViewerMsg.textContent = "이 장의 악보가 없습니다. 목록 화면의 「악보 가져오기」로 추가해 주세요.";
+          return;
+        }
+        hymnObjectUrl = URL.createObjectURL(file);
+        hymnImage.alt = `${hymn.n}장 ${hymn.title}`;
+        hymnImage.src = hymnObjectUrl;
+        hymnImage.hidden = false;
+        hymnViewerMsg.hidden = true;
+      } catch (error) {
+        if (token !== hymnShowToken) return;
+        hymnViewerMsg.textContent = "이미지를 열 수 없습니다.";
+      }
+    }
+    function stepHymn(delta) {
+      if (hymnViewer.hidden) return;
+      const next = hymnViewIndex + delta;
+      if (next < 0 || next >= hymnNavList.length) return;
+      showHymnViewer(next);
+    }
+    function syncHymnAudio() {
+      if (!hymnAudio) return;
+      const ready = Boolean(current);
+      const playing = ready && !player.paused && !player.ended;
+      hymnAudio.disabled = !ready;
+      hymnAudio.textContent = !ready ? "강의 없음" : (playing ? "⏸ 강의 일시정지" : "▶ 강의 재생");
+    }
+
+    /* ---- 배속·음량 접기 ---- */
+    let fineOpen = false;
+    try { fineOpen = localStorage.getItem("lecture-fine") === "1"; } catch (error) {}
+    function updateFineLabel() {
+      if (!fineToggle) return;
+      fineToggle.textContent = `배속 ${formatSpeed(currentSpeed)} · 음량 ${formatVolume(currentVolume)} ${fineOpen ? "▴" : "▾"}`;
+      fineToggle.setAttribute("aria-expanded", fineOpen ? "true" : "false");
+      slidersBox.hidden = !fineOpen;
+    }
+
+    function renderHome(canonOT, canonNT) {
+      homePanel.replaceChildren();
+      const add = (label, handler) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "home-choice";
+        btn.textContent = label;
+        btn.addEventListener("click", handler);
+        homePanel.append(btn);
+      };
+      if (loaded) {
+        if (canonOT) add("구약", () => openCanon("구약"));
+        if (canonNT) add("신약", () => openCanon("신약"));
+        if (!canonOT && !canonNT) add("강의", openLectures);
+      }
+      add("찬송가", openHymnView);
+    }
+
     function render() {
+      const canonOT = loaded ? findCanonDir("구약") : "";
+      const canonNT = loaded ? findCanonDir("신약") : "";
+      const rootNode = nodeAt(basePath);
+      const rootReady = rootNode.loaded !== false && !listBuilding && (rootNode.files.length > 0 || Object.keys(rootNode.dirs).length > 0);
+      if (viewMode === "home" && loaded && rootReady && !homeForced && !canonOT && !canonNT) viewMode = "lectures";
+      const hymnOn = viewMode === "hymn";
+      const homeOn = viewMode === "home";
+      hymnPanel.hidden = !hymnOn;
+      homePanel.hidden = !homeOn;
+      if (homeOn) renderHome(canonOT, canonNT);
+      list.hidden = hymnOn || (homeOn && loaded);
+
+      if (hymnOn) {
+        listNav.hidden = true;
+        upBtn.hidden = true;
+        updateHymnPanel();
+        renderHymnList();
+        renderSummary();
+        return;
+      }
+
+      if (homeOn && loaded) {
+        listNav.hidden = true;
+        upBtn.hidden = true;
+        renderSummary();
+        return;
+      }
+
       const node = nodeAt(path);
       const canGoUp = loaded && path.length > basePath.length;
       upBtn.hidden = !canGoUp;
@@ -1862,6 +2814,7 @@
       timeNow.textContent = clock(Number(seek.value) || 0);
       timeTotal.textContent = clock(Number.isFinite(player.duration) ? player.duration : 0);
       paintSeek();
+      syncHymnAudio();
     }
 
     picker.addEventListener("change", async () => {
@@ -1891,6 +2844,7 @@
     upBtn.addEventListener("click", async () => {
       if (path.length <= basePath.length) return;
       path = path.slice(0, -1);
+      pushNav();
       await ensurePathLoaded(path);
       window.scrollTo(0, 0);
       render();
@@ -2049,6 +3003,152 @@
 
     changeBtn.textContent = changeLabel();
     changeBtn.addEventListener("click", pickSource);
+    homeBtn.addEventListener("click", goHome);
+
+    function applyHymnSearch() {
+      hymnSearchText = hymnQuery.value.trim();
+      if (viewMode !== "hymn") return;
+      summary.textContent = "";
+      renderHymnList();
+      renderSummary();
+    }
+    hymnQuery.addEventListener("input", () => {
+      hymnClear.hidden = !hymnQuery.value;
+      clearTimeout(hymnSearchTimer);
+      hymnSearchTimer = setTimeout(applyHymnSearch, 120);
+    });
+    hymnSearch.addEventListener("submit", (event) => {
+      event.preventDefault();
+      clearTimeout(hymnSearchTimer);
+      applyHymnSearch();
+      hymnQuery.blur();
+    });
+    hymnClear.addEventListener("click", () => {
+      hymnQuery.value = "";
+      hymnClear.hidden = true;
+      applyHymnSearch();
+      hymnQuery.focus();
+    });
+    hymnKeys.addEventListener("click", () => {
+      hymnNumeric = !hymnNumeric;
+      hymnQuery.inputMode = hymnNumeric ? "numeric" : "search";
+      hymnKeys.textContent = hymnNumeric ? "가" : "123";
+      hymnKeys.setAttribute("aria-label", hymnNumeric ? "문자 키보드로 전환" : "숫자 키패드로 전환");
+      hymnQuery.blur();
+      hymnQuery.focus();
+    });
+    hymnImportBtn.addEventListener("click", () => hymnImportInput.click());
+    hymnImportInput.addEventListener("change", async () => {
+      const files = Array.from(hymnImportInput.files || []);
+      hymnImportInput.value = "";
+      if (files.length) await importHymnFiles(files);
+    });
+    hymnSaveBtn.addEventListener("click", saveSessionHymns);
+    hymnWipeBtn.addEventListener("click", wipeHymns);
+    fineToggle.addEventListener("click", () => {
+      fineOpen = !fineOpen;
+      try { localStorage.setItem("lecture-fine", fineOpen ? "1" : "0"); } catch (error) {}
+      updateFineLabel();
+    });
+
+    hymnPrev.addEventListener("click", () => stepHymn(-1));
+    hymnNext.addEventListener("click", () => stepHymn(1));
+    hymnClose.addEventListener("click", requestCloseViewer);
+    hymnAudio.addEventListener("click", () => { if (current) playBtn.click(); });
+    hymnZoomIn.addEventListener("click", () => setHymnZoom(hymnZoom * 1.3));
+    hymnZoomOut.addEventListener("click", () => setHymnZoom(hymnZoom / 1.3));
+    hymnImage.addEventListener("error", () => {
+      if (hymnViewer.hidden || !hymnImage.getAttribute("src")) return;
+      hymnImage.hidden = true;
+      hymnViewerMsg.hidden = false;
+      hymnViewerMsg.textContent = "이 이미지를 표시할 수 없습니다.";
+    });
+    player.addEventListener("play", syncHymnAudio);
+    player.addEventListener("pause", syncHymnAudio);
+
+    /* 핀치 확대 · 더블탭 · 좌우 스와이프 */
+    (function setupHymnGestures() {
+      const stage = hymnViewerStage;
+      let pinch = null;
+      let swipe = null;
+      let lastTap = { t: 0, x: 0, y: 0 };
+      const dist = (touches) => Math.hypot(
+        touches[0].clientX - touches[1].clientX,
+        touches[0].clientY - touches[1].clientY
+      );
+      stage.addEventListener("touchstart", (event) => {
+        if (event.touches.length === 2) {
+          pinch = { d: dist(event.touches), z: hymnZoom };
+          swipe = null;
+        } else if (event.touches.length === 1) {
+          const t = event.touches[0];
+          swipe = { x: t.clientX, y: t.clientY, t: Date.now() };
+          pinch = null;
+        }
+      }, { passive: true });
+      stage.addEventListener("touchmove", (event) => {
+        if (pinch && event.touches.length === 2) {
+          event.preventDefault();
+          const rect = stage.getBoundingClientRect();
+          const cx = (event.touches[0].clientX + event.touches[1].clientX) / 2 - rect.left;
+          const cy = (event.touches[0].clientY + event.touches[1].clientY) / 2 - rect.top;
+          setHymnZoom(pinch.z * dist(event.touches) / pinch.d, cx, cy);
+        }
+      }, { passive: false });
+      stage.addEventListener("touchend", (event) => {
+        if (pinch) {
+          if (event.touches.length < 2) pinch = null;
+          swipe = null;
+          return;
+        }
+        if (!swipe || event.changedTouches.length !== 1) return;
+        const t = event.changedTouches[0];
+        const dx = t.clientX - swipe.x;
+        const dy = t.clientY - swipe.y;
+        const dt = Date.now() - swipe.t;
+        swipe = null;
+        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+          const now = Date.now();
+          if (now - lastTap.t < 320 && Math.abs(t.clientX - lastTap.x) < 30 && Math.abs(t.clientY - lastTap.y) < 30) {
+            const rect = stage.getBoundingClientRect();
+            setHymnZoom(hymnZoom > 1.05 ? 1 : 2.5, t.clientX - rect.left, t.clientY - rect.top);
+            lastTap = { t: 0, x: 0, y: 0 };
+          } else {
+            lastTap = { t: now, x: t.clientX, y: t.clientY };
+          }
+          return;
+        }
+        if (hymnZoom <= 1.05 && dt < 700 && Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 2) {
+          stepHymn(dx < 0 ? 1 : -1);
+        }
+      }, { passive: true });
+      stage.addEventListener("dblclick", (event) => {
+        const rect = stage.getBoundingClientRect();
+        setHymnZoom(hymnZoom > 1.05 ? 1 : 2.5, event.clientX - rect.left, event.clientY - rect.top);
+      });
+    })();
+
+    document.addEventListener("keydown", (event) => {
+      if (hymnViewer.hidden) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        requestCloseViewer();
+      } else if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        stepHymn(-1);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        stepHymn(1);
+      } else if (event.key === "+" || event.key === "=") {
+        setHymnZoom(hymnZoom * 1.3);
+      } else if (event.key === "-") {
+        setHymnZoom(hymnZoom / 1.3);
+      }
+    });
+
+    updateFineLabel();
+    replaceNav();
+    loadStoredHymns();
     if (canRememberFolder) restoreSavedFolder();
   </script>
 </body>

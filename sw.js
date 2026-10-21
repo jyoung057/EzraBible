@@ -1,8 +1,9 @@
-const CACHE = "ezra-bible-v3";
+const CACHE = "ezra-bible-v5";
 const ASSETS = [
   "./",
   "./index.html",
   "./EZRA_Bible.html",
+  "./hymns.js",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
