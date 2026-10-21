@@ -2157,7 +2157,7 @@
           const saveCard = document.createElement("button");
           saveCard.type = "button";
           saveCard.className = "big-btn ghost";
-          saveCard.textContent = "폰에 저장 (다음부터 자동으로 열기)";
+          saveCard.textContent = "장치에 저장 (다음부터 자동으로 열기)";
           saveCard.addEventListener("click", saveAllToPhone);
           actions.append(saveCard);
         }
@@ -2878,7 +2878,7 @@
     }
     function updateSourceButtons() {
       saveBtn.hidden = !opfsOk;
-      saveBtn.textContent = usingLibrary ? "강의 추가 저장" : "폰에 저장";
+      saveBtn.textContent = usingLibrary ? "강의 추가 저장" : "장치에 저장";
       changeBtn.textContent = usingLibrary ? "저장 삭제" : changeLabel();
       changeBtn.classList.toggle("warn", usingLibrary);
     }
@@ -3015,14 +3015,14 @@
               }
             }
             done += 1;
-            summary.textContent = `폰에 저장 중… ${done}/${files.length}  (화면을 켜 두세요)`;
+            summary.textContent = `장치에 저장 중… ${done}/${files.length}  (화면을 켜 두세요)`;
             if (done % 3 === 0) await yieldUi();
           }
         }
         const parts = [];
         if (files.length) parts.push(`강의 ${files.length}개${skipped ? `(이미 있던 ${skipped}개 포함)` : ""}`);
         if (images.length) parts.push(`악보 ${images.length}장`);
-        const message = `폰에 저장했습니다: ${parts.join(" · ")}`;
+        const message = `장치에 저장했습니다: ${parts.join(" · ")}`;
         if (files.length) {
           resetPlayback();
           await openLibrary();
@@ -3041,7 +3041,7 @@
       }
     }
     async function wipeLibrary() {
-      if (!window.confirm("폰에 저장된 강의 파일을 모두 삭제할까요?\n(찬송가 악보는 삭제되지 않습니다)")) return;
+      if (!window.confirm("장치에 저장된 강의 파일을 모두 삭제할까요?\n(찬송가 악보는 삭제되지 않습니다)")) return;
       try {
         resetPlayback();
         const root = await navigator.storage.getDirectory();
@@ -3121,11 +3121,11 @@
       };
       addTile("구약", ICONS.ot, () => {
         if (canonOT) openCanon("구약");
-        else note("구약 폴더가 없습니다. 「폰에 저장」으로 구약 강의를 저장해 주세요.");
+        else note("구약 폴더가 없습니다. 「장치에 저장」으로 구약 강의를 저장해 주세요.");
       }, !canonOT);
       addTile("신약", ICONS.nt, () => {
         if (canonNT) openCanon("신약");
-        else note("신약 폴더가 없습니다. 「폰에 저장」으로 신약 강의를 저장해 주세요.");
+        else note("신약 폴더가 없습니다. 「장치에 저장」으로 신약 강의를 저장해 주세요.");
       }, !canonNT);
       addTile("찬송가", ICONS.hymn, openHymnView, false);
       if (loaded && !canonOT && !canonNT) addTile("강의 목록", ICONS.list, openLectures, false, true);
