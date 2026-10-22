@@ -1108,7 +1108,7 @@
     <div class="dock">
       <header>
         <div class="title-row">
-          <h1>노우호목사님 성경강해</h1>
+          <h1 id="appTitle">노우호목사님 성경강해</h1>
         </div>
         <div class="header-tools">
           <p id="summary"></p>
@@ -1307,7 +1307,7 @@
     let idbBroken = false;
     const hymnMem = new Map();
     let hymnShowToken = 0;
-    const APP_VERSION = "2026-10-22 r20";
+    const APP_VERSION = "2026-10-22 r23";
     const HYMN_BOOK = (() => {
       try {
         const el = document.getElementById("hymnData");
@@ -2894,7 +2894,7 @@
       if (hymmDirName() && !hymnIndexTask) {
         try { await indexHymnImages(); } catch (error) {}
       }
-      hymnNavList = filteredHymns();
+      hymnNavList = HYMN_BOOK; /* 검색 결과와 상관없이 전체 장 순서로 이동 */
       const index = hymnNavList.findIndex((hymn) => hymn.n === n);
       if (index < 0) return;
       showHymnViewer(index);
@@ -2907,13 +2907,6 @@
       hymnViewIndex = index;
       hymnViewer.hidden = false;
       document.body.classList.add("hymn-open");
-      if (wasHidden) {
-        try {
-          const de = document.documentElement;
-          const rq = de.requestFullscreen || de.webkitRequestFullscreen;
-          if (rq && !document.fullscreenElement) { const r = rq.call(de); if (r && r.catch) r.catch(() => {}); }
-        } catch (error) {}
-      }
       if (!fromNav) {
         if (wasHidden) pushNav();
         else replaceNav();
@@ -3442,6 +3435,7 @@
     }
 
     function render() {
+      document.getElementById("appTitle").textContent = viewMode === "hymn" ? "찬송가 검색" : "노우호목사님 성경강해";
       document.querySelector(".src-btns").hidden = viewMode === "hymn"; /* 찬송가 화면에서는 강의 저장 버튼을 숨김 */
       /* 폴더가 열리면 강의 파일 목록을 미리(백그라운드로) 확인해 둡니다. */
       if (loaded && browseMode !== "tree" && !lectScanning && lectScanStamp !== lectStamp) {
