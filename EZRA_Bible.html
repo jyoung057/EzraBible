@@ -1295,6 +1295,7 @@
     let lectStamp = 0;
     let lectScanStamp = -1;
     let lectScanning = false;
+    const lectMissing = new Set(); /* 눌러서 확인한 결과 기기에 없는 강의 */
     const LECT = (() => {
       try {
         const el = document.getElementById("lectData");
@@ -1305,7 +1306,7 @@
     let idbBroken = false;
     const hymnMem = new Map();
     let hymnShowToken = 0;
-    const APP_VERSION = "2026-10-22 r16";
+    const APP_VERSION = "2026-10-22 r18";
     const HYMN_BOOK = (() => {
       try {
         const el = document.getElementById("hymnData");
@@ -2683,6 +2684,7 @@
     function resetHymnLibrary() {
       lectStamp += 1;
       lectAvail = new Map();
+      lectMissing.clear();
       indexT = null;
       indexF = null;
       viewMode = "home";
@@ -3229,7 +3231,13 @@
         }
       }
     }
-    async function ensureLectureRegistry() {
+    let lectPromise = null;
+    function ensureLectureRegistry() {
+      if (lectScanning && lectPromise) return lectPromise;
+      lectPromise = scanLectureRegistry();
+      return lectPromise;
+    }
+    async function scanLectureRegistry() {
       if (!loaded) { lectAvail = new Map(); return; }
       if (browseMode === "tree") {
         const out = new Map();
@@ -3342,10 +3350,27 @@
       fileList.className = "list files";
       for (const { row, found } of items) {
         const label = displayName(row[0]);
+        const key = nfc(row[0]);
         if (found) {
           addRow(fileList, "file", label, formatDuration(row[1]), found.relativePath, () => playItem(found, avail));
+        } else if (lectMissing.has(key)) {
+          addRow(fileList, "file is-missing", label, `${formatDuration(row[1])} · 파일 없음`, `missing:${row[0]}`, missingNote);
         } else {
-          addRow(fileList, "file is-missing", label, `${formatDuration(row[1])} · ${lectScanning ? "확인 중…" : "파일 없음"}`, `missing:${row[0]}`, missingNote);
+          /* 목록만 먼저 보여 주고, 눌렀을 때 파일을 찾아봅니다. */
+          addRow(fileList, "file", label, formatDuration(row[1]), `lookup:${row[0]}`, async () => {
+            await ensureLectureRegistry();
+            if (viewMode !== "index") return;
+            const hit = lectAvail.get(key);
+            if (hit) {
+              const list2 = folder.f.map((r) => lectAvail.get(nfc(r[0]))).filter(Boolean);
+              renderIndexList();
+              playItem(hit, list2);
+            } else {
+              lectMissing.add(key);
+              renderIndexList();
+              missingNote();
+            }
+          });
         }
       }
       list.append(fileList);
@@ -3415,6 +3440,10 @@
     }
 
     function render() {
+      /* 폴더가 열리면 강의 파일 목록을 미리(백그라운드로) 확인해 둡니다. */
+      if (loaded && browseMode !== "tree" && !lectScanning && lectScanStamp !== lectStamp) {
+        ensureLectureRegistry().then(() => { if (viewMode === "index") { renderSummary(); renderIndexList(); } });
+      }
       const canonOT = loaded ? findCanonDir("구약") : "";
       const canonNT = loaded ? findCanonDir("신약") : "";
       const hymnOn = viewMode === "hymn";
