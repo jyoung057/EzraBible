@@ -224,6 +224,7 @@
     }
 
     .up-btn[hidden] { display: none; }
+    .bible-link { border-color: var(--accent); color: var(--accent); }
 
     .crumbs {
       flex: 1;
@@ -734,7 +735,10 @@
       margin: 4px 0 18px;
     }
 
-    body.is-home .title-row { display: none; }
+    body.is-home .title-row { justify-content: flex-end; }
+    body.is-home h1 { display: none; }
+    body.is-home #homeBtn { display: none; }
+    body.is-home .exit-row { grid-template-columns: 1fr; }
     body.is-home header { padding-bottom: 10px; }
 
     .hero {
@@ -780,7 +784,7 @@
     .hero-tiles {
       position: relative;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
 
@@ -988,6 +992,13 @@
     }
     .small-btn.danger { color: #c62828; border-color: #e3b8b8; }
     .src-btns[hidden] { display: none !important; }
+    .gear-btn {
+      flex: none; width: 44px; height: 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--line); border-radius: 50%; background: var(--bg-elev); color: var(--ink); cursor: pointer;
+    }
+    .gear-btn[hidden] { display: none !important; }
+    .gear-btn[aria-expanded="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+    .gear-btn svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .row.is-missing .name { opacity: 0.5; }
     .row.is-missing .meta { color: #b0553f; }
     .fine-toggle {
@@ -1097,6 +1108,144 @@
     .hymn-viewer-bar button:disabled { opacity: 0.35; cursor: default; }
     .hymn-viewer-bar button.fit { white-space: nowrap; min-width: 40px; }
 
+    /* ================= 성경 읽기 ================= */
+    body.bible-open { overflow: hidden; }
+    .bible-view {
+      --bv-bg: #FBF9F4; --bv-ink: #2C3327; --bv-muted: #70756B; --bv-line: #E5DFD5;
+      --bv-card: #FFFFFF; --bv-accent: #4A6B5D; --bv-soft: #EAEFEA; --bv-hit: #FFF1B8;
+      --bv-size: 19px; --bv-lh: 1.8;
+      position: fixed; inset: 0; z-index: 40;
+      display: flex; flex-direction: column;
+      background: var(--bv-bg); color: var(--bv-ink);
+    }
+    .bible-view[hidden] { display: none !important; }
+    .bible-view.t-sepia { --bv-bg: #F3E9D2; --bv-ink: #4A3B25; --bv-muted: #8A7658; --bv-line: #E0D2B2; --bv-card: #FAF2DE; --bv-accent: #8A5A2B; --bv-soft: #EBDDBC; --bv-hit: #F6D98A; }
+    .bible-view.t-dark { --bv-bg: #15181A; --bv-ink: #DADFD6; --bv-muted: #8E958B; --bv-line: #2A3033; --bv-card: #1E2326; --bv-accent: #8DB8A4; --bv-soft: #26302C; --bv-hit: #4A4320; color-scheme: dark; }
+    .bible-view button { font: inherit; color: inherit; cursor: pointer; }
+    .bv-top {
+      flex: none; display: flex; align-items: center; gap: 4px;
+      padding: calc(6px + env(safe-area-inset-top)) 6px 6px;
+      background: var(--bv-card); border-bottom: 1px solid var(--bv-line);
+    }
+    .bv-btn {
+      flex: none; min-height: 42px; padding: 0 8px; border: 1px solid var(--bv-line);
+      border-radius: 12px; background: var(--bv-bg); font-size: 0.86rem; font-weight: 700;
+    }
+    .bv-btn.bv-close { background: #d93025; border-color: #d93025; color: #fff; }
+    .bv-icon { width: 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+    .bv-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .bv-title {
+      flex: 1 1 0; min-width: 0; min-height: 42px; padding: 0 4px;
+      border: 1px solid var(--bv-accent); border-radius: 12px;
+      background: var(--bv-soft); font-size: 0.95rem; font-weight: 800;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .bv-body {
+      flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+      padding: 16px 18px 28px; -webkit-overflow-scrolling: touch;
+    }
+    .bv-h { margin: 0 0 12px; font-size: 1.25rem; text-align: center; color: var(--bv-accent); }
+    .bv-v {
+      margin: 0 0 0.35em; font-size: var(--bv-size); line-height: var(--bv-lh);
+      word-break: keep-all; overflow-wrap: anywhere; padding: 1px 4px; border-radius: 6px;
+    }
+    .bv-v sup { font-size: 0.62em; font-weight: 800; color: var(--bv-accent); margin-right: 0.35em; vertical-align: 0.45em; }
+    .bible-view.no-nums .bv-v sup { display: none; }
+    .bible-view.serif .bv-v, .bible-view.serif .bv-h { font-family: "Noto Serif KR", "Nanum Myeongjo", "Batang", serif; }
+    .bv-v.sel { background: var(--bv-soft); box-shadow: inset 3px 0 0 var(--bv-accent); }
+    .bv-v.hit { background: var(--bv-hit); }
+    .bv-h small { display: block; margin-top: 2px; font-size: 0.72rem; font-weight: 600; color: var(--bv-muted); }
+    .bv-pv {
+      display: block; margin-top: 2px; padding-left: 0.2em;
+      font-size: 0.86em; line-height: 1.55; color: var(--bv-muted);
+    }
+    .bv-pv b { margin-right: 0.45em; padding: 0 5px; border-radius: 4px; background: var(--bv-soft); color: var(--bv-accent); font-size: 0.8em; }
+    .bv-pv.off { font-style: italic; opacity: 0.7; }
+    .bv-end { margin: 18px 0 0; text-align: center; color: var(--bv-muted); font-size: 0.9rem; }
+    .bv-sel {
+      flex: none; display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+      background: var(--bv-soft); border-top: 1px solid var(--bv-line);
+    }
+    .bv-sel[hidden] { display: none !important; }
+    .bv-sel span { flex: 1; font-weight: 700; font-size: 0.92rem; }
+    .bv-bottom {
+      flex: none; display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+      background: var(--bv-card); border-top: 1px solid var(--bv-line);
+    }
+    .bv-bottom button {
+      flex: 1 1 0; min-height: 48px; border: 0; border-radius: 12px;
+      background: var(--bv-accent); color: #fff; font-weight: 800; font-size: 1rem;
+    }
+    .bible-view.t-dark .bv-bottom button { color: #0E1412; }
+    .bv-bottom button:disabled { opacity: 0.35; cursor: default; }
+    .bv-bottom span { flex: 0 0 auto; min-width: 4.2em; text-align: center; font-weight: 700; color: var(--bv-muted); font-variant-numeric: tabular-nums; }
+    .bv-card {
+      max-width: 520px; margin: 24px auto; padding: 22px 20px; text-align: center;
+      background: var(--bv-card); border: 1px solid var(--bv-line); border-radius: 18px;
+    }
+    .bv-card h3 { margin: 0 0 8px; font-size: 1.1rem; }
+    .bv-card p { margin: 0 0 14px; color: var(--bv-muted); line-height: 1.6; font-size: 0.94rem; word-break: keep-all; }
+    .bv-main {
+      display: block; width: 100%; min-height: 50px; border: 0; border-radius: 14px;
+      background: var(--bv-accent); color: #fff; font-weight: 800; font-size: 1rem;
+    }
+    .bible-view.t-dark .bv-main { color: #0E1412; }
+    .bv-ghost {
+      display: block; width: 100%; min-height: 46px; margin-top: 10px;
+      border: 1px solid var(--bv-line); border-radius: 14px; background: var(--bv-bg); font-weight: 700;
+    }
+    .bv-panel {
+      position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column;
+      background: var(--bv-bg);
+    }
+    .bv-panel[hidden] { display: none !important; }
+    .bv-phead {
+      flex: none; display: flex; align-items: center; gap: 8px;
+      padding: calc(6px + env(safe-area-inset-top)) 8px 6px;
+      background: var(--bv-card); border-bottom: 1px solid var(--bv-line);
+    }
+    .bv-phead strong { flex: 1; font-size: 1.05rem; }
+    .bv-pbody { flex: 1; min-height: 0; overflow-y: auto; padding: 12px 12px 28px; overscroll-behavior: contain; }
+    .bv-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+    .bv-tabs button, .bv-chip {
+      flex: 1; min-height: 42px; border: 1px solid var(--bv-line); border-radius: 12px;
+      background: var(--bv-card); font-weight: 700;
+    }
+    .bv-tabs button.on, .bv-chip.on { background: var(--bv-accent); border-color: var(--bv-accent); color: #fff; }
+    .bible-view.t-dark .bv-tabs button.on, .bible-view.t-dark .bv-chip.on { color: #0E1412; }
+    .bv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .bv-grid.ch { grid-template-columns: repeat(5, 1fr); }
+    .bv-grid button {
+      min-height: 48px; padding: 4px; border: 1px solid var(--bv-line); border-radius: 12px;
+      background: var(--bv-card); font-weight: 700; font-size: 0.95rem;
+    }
+    .bv-grid button.cur { border-color: var(--bv-accent); background: var(--bv-soft); color: var(--bv-accent); }
+    .bv-input {
+      width: 100%; min-height: 48px; padding: 0 14px; border: 1px solid var(--bv-line);
+      border-radius: 14px; background: var(--bv-card); color: var(--bv-ink); font: inherit; font-size: 1.05rem;
+    }
+    .bv-chips { display: flex; gap: 8px; margin: 10px 0; }
+    .bv-chip { min-height: 38px; font-size: 0.88rem; }
+    .bv-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+    .bv-row {
+      display: block; width: 100%; text-align: left; padding: 10px 12px;
+      border: 1px solid var(--bv-line); border-radius: 12px; background: var(--bv-card);
+    }
+    .bv-row b { display: block; color: var(--bv-accent); margin-bottom: 2px; }
+    .bv-row small { color: var(--bv-muted); }
+    .bv-row mark { background: var(--bv-hit); color: inherit; border-radius: 3px; }
+    .bv-row.go { border-color: var(--bv-accent); background: var(--bv-soft); }
+    .bv-note { margin: 10px 2px; color: var(--bv-muted); font-size: 0.88rem; }
+    .bv-set { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 4px; border-bottom: 1px solid var(--bv-line); }
+    .bv-set > span { font-weight: 700; }
+    .bv-seg { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .bv-seg button { min-height: 40px; min-width: 52px; padding: 0 10px; border: 1px solid var(--bv-line); border-radius: 10px; background: var(--bv-card); font-weight: 700; }
+    .bv-seg button.on { background: var(--bv-accent); border-color: var(--bv-accent); color: #fff; }
+    .bible-view.t-dark .bv-seg button.on { color: #0E1412; }
+    .bv-sample { margin: 12px 0; padding: 12px; border: 1px dashed var(--bv-line); border-radius: 12px; }
+    .bv-danger { color: #c0392b; border-color: #e3b5ae; }
+
     :focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
@@ -1108,7 +1257,8 @@
     <div class="dock">
       <header>
         <div class="title-row">
-          <h1 id="appTitle">노우호목사님 성경강해</h1>
+          <h1 id="appTitle">에스라 노우호목사님 성경강해</h1>
+          <button type="button" id="srcGear" class="gear-btn" aria-label="저장·폴더 설정" aria-expanded="false" title="설정"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8l1.6 2.3 2.7-.7.9 2.7 2.7.9-.7 2.7 2.3 1.6-2.3 1.6.7 2.7-2.7.9-.9 2.7-2.7-.7L12 21.2l-1.6-2.3-2.7.7-.9-2.7-2.7-.9.7-2.7L2.5 12l2.3-1.6-.7-2.7 2.7-.9.9-2.7 2.7.7z"/></svg></button>
         </div>
         <div class="header-tools">
           <p id="summary"></p>
@@ -1167,6 +1317,7 @@
     </div>
     <div class="list-nav" id="listNav" hidden>
       <button type="button" id="upBtn" class="up-btn" hidden>← 상위</button>
+      <button type="button" id="bibleLink" class="up-btn bible-link">성경보기</button>
       <nav class="crumbs" id="crumbs" aria-label="현재 위치"></nav>
       <input id="saveInput" type="file" multiple hidden>
       <input id="picker" type="file" webkitdirectory directory multiple accept=".mp3,audio/mpeg,.jpg,.jpeg,.png,.gif,.webp,.bmp,image/*" hidden>
@@ -1204,6 +1355,33 @@
         <button type="button" id="hymnAudio" aria-label="강의 재생" hidden>▶</button>
         <button type="button" id="hymnClose" aria-label="닫기">✕ 닫기</button>
       </div>
+    </div>
+    <div id="bibleView" class="bible-view" hidden>
+      <div class="bv-top">
+        <button type="button" id="bvClose" class="bv-btn bv-close">✕ 닫기</button>
+        <button type="button" id="bvTitle" class="bv-title" aria-label="책·장 선택">성경</button>
+        <button type="button" id="bvFind" class="bv-btn bv-icon" aria-label="찾기" title="찾기"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></button>
+        <button type="button" id="bvSet" class="bv-btn bv-icon" aria-label="설정" title="설정"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8l1.6 2.3 2.7-.7.9 2.7 2.7.9-.7 2.7 2.3 1.6-2.3 1.6.7 2.7-2.7.9-.9 2.7-2.7-.7L12 21.2l-1.6-2.3-2.7.7-.9-2.7-2.7-.9.7-2.7L2.5 12l2.3-1.6-.7-2.7 2.7-.9.9-2.7 2.7.7z"/></svg></button>
+      </div>
+      <div id="bvBody" class="bv-body"></div>
+      <div id="bvSel" class="bv-sel" hidden>
+        <span id="bvSelInfo"></span>
+        <button type="button" id="bvCopy" class="bv-btn">복사</button>
+        <button type="button" id="bvUnsel" class="bv-btn">해제</button>
+      </div>
+      <div class="bv-bottom">
+        <button type="button" id="bvPrev">‹ 이전 장</button>
+        <span id="bvPos"></span>
+        <button type="button" id="bvNext">다음 장 ›</button>
+      </div>
+      <div id="bvPanel" class="bv-panel" hidden>
+        <div class="bv-phead">
+          <button type="button" id="bvBack" class="bv-btn">‹ 뒤로</button>
+          <strong id="bvPTitle"></strong>
+        </div>
+        <div id="bvPBody" class="bv-pbody"></div>
+      </div>
+      <input id="bvFile" type="file" hidden>
     </div>
     <div class="exit-row">
       <button type="button" id="homeBtn" class="home-btn">홈으로</button>
@@ -1284,6 +1462,9 @@
     let hymnObjectUrl = "";
     let hymnStored = new Set();
     let hymnNavList = [];
+    let srcOpen = false;     /* 저장·폴더 버튼 펼침 */
+    let bibleOpen = false;   /* 성경 읽기 화면이 열려 있는지 */
+    let biblePanel = null;   /* 성경 안 패널(책/찾기/내역/설정) */
     let hymnZoom = 1;
     let hymnMode = "h"; /* h: 높이에 맞춤, w: 폭에 맞춤, c: 직접 지정 */
     let hymnRenderToken = 0;
@@ -1307,7 +1488,7 @@
     let idbBroken = false;
     const hymnMem = new Map();
     let hymnShowToken = 0;
-    const APP_VERSION = "2026-10-22 r23";
+    const APP_VERSION = "2026-10-23 r32";
     const HYMN_BOOK = (() => {
       try {
         const el = document.getElementById("hymnData");
@@ -2581,7 +2762,7 @@
       return true;
     }
     function navSnap() {
-      return { mode: viewMode, path: path.slice(), hv: hymnViewIndex, it: indexT, ifd: indexF };
+      return { mode: viewMode, path: path.slice(), hv: hymnViewIndex, it: indexT, ifd: indexF, bb: bibleOpen ? (biblePanel ? 2 : 1) : 0 };
     }
     function pushNav() {
       statusMsg = "";
@@ -2592,6 +2773,12 @@
     }
     window.addEventListener("popstate", async (event) => {
       const st = event.state || { mode: "lectures", path: basePath.slice(), hv: -1 };
+      if (bibleOpen) {
+        const bb = st.bb | 0;
+        if (bb === 0) closeBible(true);
+        else if (bb === 1 && biblePanel) bvHidePanel();
+        if (bibleOpen) return;
+      }
       if (!hymnViewer.hidden && !(st.hv >= 0)) closeHymnViewer();
       viewMode = st.mode === "hymn" ? "hymn" : (st.mode === "home" ? "home" : (st.mode === "index" ? "index" : "lectures"));
       indexT = st.it || null;
@@ -3378,6 +3565,7 @@
         nt: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M6.5 8.5h11"/></svg>',
         hymn: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>',
         list: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h9"/></svg>',
+        bible: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h11a1.5 1.5 0 0 1 1.5 1.5v14.5H7.5A1.5 1.5 0 0 0 6 21z"/><path d="M6 19.5V5"/><path d="M10 8h5M12.5 8v6"/></svg>',
       };
       homePanel.replaceChildren();
 
@@ -3414,8 +3602,9 @@
         btn.addEventListener("click", handler);
         tiles.append(btn);
       };
-      addTile("구약", ICONS.ot, () => openIndex("구약"), false);
-      addTile("신약", ICONS.nt, () => openIndex("신약"), false);
+      addTile("구약 강의", ICONS.ot, () => openIndex("구약"), false);
+      addTile("신약 강의", ICONS.nt, () => openIndex("신약"), false);
+      addTile("성경 읽기", ICONS.bible, openBible, false);
       addTile("찬송가", ICONS.hymn, openHymnView, false);
       if (loaded) addTile("저장된 전체 파일 보기", ICONS.list, openLectures, false, true);
       hero.append(text, tiles);
@@ -3434,9 +3623,14 @@
       homePanel.append(hero, verse);
     }
 
+    const APP_TITLE_TEXT = document.getElementById("appTitle").textContent; /* HTML에 적은 제목을 그대로 사용 */
     function render() {
-      document.getElementById("appTitle").textContent = viewMode === "hymn" ? "찬송가 검색" : "노우호목사님 성경강해";
-      document.querySelector(".src-btns").hidden = viewMode === "hymn"; /* 찬송가 화면에서는 강의 저장 버튼을 숨김 */
+      document.getElementById("appTitle").textContent = viewMode === "hymn" ? "찬송가 검색" : APP_TITLE_TEXT;
+      /* 저장·폴더 버튼은 오른쪽 위 톱니바퀴를 눌렀을 때만 보입니다(강의 폴더가 아직 없으면 처음에는 자동으로 보임). */
+      const gear = document.getElementById("srcGear");
+      gear.hidden = viewMode === "hymn";
+      document.querySelector(".src-btns").hidden = viewMode === "hymn" || (loaded && !srcOpen);
+      gear.setAttribute("aria-expanded", String(!document.querySelector(".src-btns").hidden));
       /* 폴더가 열리면 강의 파일 목록을 미리(백그라운드로) 확인해 둡니다. */
       if (loaded && browseMode !== "tree" && !lectScanning && lectScanStamp !== lectStamp) {
         ensureLectureRegistry().then(() => { if (viewMode === "index") { renderSummary(); renderIndexList(); } });
@@ -3726,6 +3920,1029 @@
       }, 150);
     }
     document.getElementById("exitBtn").addEventListener("click", exitApp);
+    document.getElementById("bibleLink").addEventListener("click", () => openBible(current ? current.name : null));
+    document.getElementById("srcGear").addEventListener("click", () => { srcOpen = !srcOpen; render(); });
+
+    /* ================= 성경 읽기 ================= */
+    const BIBLE_BOOKS = [
+      ["창","창세기"],["출","출애굽기"],["레","레위기"],["민","민수기"],["신","신명기"],["수","여호수아"],["삿","사사기"],["룻","룻기"],
+      ["삼상","사무엘상"],["삼하","사무엘하"],["왕상","열왕기상"],["왕하","열왕기하"],["대상","역대상"],["대하","역대하"],
+      ["스","에스라"],["느","느헤미야"],["에","에스더"],["욥","욥기"],["시","시편"],["잠","잠언"],["전","전도서"],["아","아가"],
+      ["사","이사야"],["렘","예레미야"],["애","예레미야애가"],["겔","에스겔"],["단","다니엘"],["호","호세아"],["욜","요엘"],["암","아모스"],
+      ["옵","오바댜"],["욘","요나"],["미","미가"],["나","나훔"],["합","하박국"],["습","스바냐"],["학","학개"],["슥","스가랴"],["말","말라기"],
+      ["마","마태복음"],["막","마가복음"],["눅","누가복음"],["요","요한복음"],["행","사도행전"],["롬","로마서"],
+      ["고전","고린도전서"],["고후","고린도후서"],["갈","갈라디아서"],["엡","에베소서"],["빌","빌립보서"],["골","골로새서"],
+      ["살전","데살로니가전서"],["살후","데살로니가후서"],["딤전","디모데전서"],["딤후","디모데후서"],["딛","디도서"],["몬","빌레몬서"],
+      ["히","히브리서"],["약","야고보서"],["벧전","베드로전서"],["벧후","베드로후서"],["요일","요한일서"],["요이","요한이서"],["요삼","요한삼서"],
+      ["유","유다서"],["계","요한계시록"]
+    ];
+    const BIBLE_ALIAS = { "요한1서": 61, "요한2서": 62, "요한3서": 63, "계시록": 65, "사무엘상서": 8, "사무엘하서": 9 };
+    const BIBLE_ABBR = new Map(BIBLE_BOOKS.map((b, i) => [b[0], i]));
+    const BIBLE_SET_KEY = "bible-settings";
+    const BIBLE_HIST_KEY = "bible-history";
+    const BIBLE_POS_KEY = "bible-pos";
+    const bibleView = document.getElementById("bibleView");
+    const bvBody = document.getElementById("bvBody");
+    const bvTitle = document.getElementById("bvTitle");
+    const bvPanel = document.getElementById("bvPanel");
+    const bvPBody = document.getElementById("bvPBody");
+    const bvPTitle = document.getElementById("bvPTitle");
+    const bvPrev = document.getElementById("bvPrev");
+    const bvNext = document.getElementById("bvNext");
+    const bvPos = document.getElementById("bvPos");
+    const bvSel = document.getElementById("bvSel");
+    const bvSelInfo = document.getElementById("bvSelInfo");
+    const bvFile = document.getElementById("bvFile");
+    let bible = null;          /* { books:[{abbr,name,chapters:[,[{l,t}]]}], flat:[{b,c,l,t}] } */
+    let bibleMemText = "";     /* 저장소를 못 쓸 때를 대비한 임시 보관 */
+    let bibleBusy = "";
+    let bpos = { b: 0, c: 1 };
+    let bvMode = "read";       /* read | import */
+    let bvSelected = new Set();
+    let bvWake = null;
+    const BIBLE_VERS = { NEW: "개정개혁", KRV: "개역한글", KJV: "KJV", ASV: "ASV", WEB: "WEB" };
+    const BIBLE_VER_CODES = ["NEW", "KRV", "KJV", "ASV", "WEB"];
+    let bset = { size: 19, lh: 1.8, nums: true, theme: "light", font: "sans", swipe: true, awake: false, main: "NEW", par: [] };
+    try { Object.assign(bset, JSON.parse(localStorage.getItem(BIBLE_SET_KEY) || "{}")); } catch (error) {}
+    if (!BIBLE_VERS[bset.main]) bset.main = "NEW";
+    if (!Array.isArray(bset.par)) bset.par = [];
+    bset.par = bset.par.filter((c, i, a) => BIBLE_VERS[c] && c !== bset.main && a.indexOf(c) === i);
+
+    function bvSaveSettings() { try { localStorage.setItem(BIBLE_SET_KEY, JSON.stringify(bset)); } catch (error) {} }
+    function bvApplySettings() {
+      bibleView.style.setProperty("--bv-size", `${bset.size}px`);
+      bibleView.style.setProperty("--bv-lh", String(bset.lh));
+      bibleView.classList.toggle("no-nums", !bset.nums);
+      bibleView.classList.toggle("serif", bset.font === "serif");
+      bibleView.classList.remove("t-sepia", "t-dark");
+      if (bset.theme === "sepia") bibleView.classList.add("t-sepia");
+      if (bset.theme === "dark") bibleView.classList.add("t-dark");
+    }
+
+    /* ---- 본문 저장(기기 안 IndexedDB) ---- */
+    function bvDb() {
+      return new Promise((resolve, reject) => {
+        let req;
+        try { req = indexedDB.open("bible-text", 2); } catch (error) { reject(error); return; }
+        req.onupgradeneeded = () => {
+          const names = req.result.objectStoreNames;
+          if (!names.contains("kv")) req.result.createObjectStore("kv");
+          if (!names.contains("ch")) req.result.createObjectStore("ch");
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+        req.onblocked = () => reject(new Error("blocked"));
+      });
+    }
+    async function bvStoreGet() {
+      try {
+        const db = await bvDb();
+        return await new Promise((resolve, reject) => {
+          const r = db.transaction("kv").objectStore("kv").get("krv");
+          r.onsuccess = () => resolve(r.result || "");
+          r.onerror = () => reject(r.error);
+        });
+      } catch (error) { return bibleMemText; }
+    }
+    async function bvStoreSet(text) {
+      bibleMemText = text;
+      try {
+        const db = await bvDb();
+        await new Promise((resolve, reject) => {
+          const tx = db.transaction("kv", "readwrite");
+          tx.objectStore("kv").put(text, "krv");
+          tx.oncomplete = resolve;
+          tx.onerror = () => reject(tx.error);
+          tx.onabort = () => reject(tx.error);
+        });
+        try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (error) {}
+        return true;
+      } catch (error) { return false; }
+    }
+    async function bvStoreDel() {
+      bibleMemText = "";
+      try {
+        const db = await bvDb();
+        await new Promise((resolve, reject) => {
+          const tx = db.transaction("kv", "readwrite");
+          tx.objectStore("kv").delete("krv");
+          tx.oncomplete = resolve;
+          tx.onerror = () => reject(tx.error);
+        });
+      } catch (error) {}
+    }
+
+    /* ---- 파싱: {"창1:1": "본문", ...} ---- */
+    function bvParse(text) {
+      const raw = JSON.parse(text);
+      if (!raw || typeof raw !== "object" || Array.isArray(raw)) throw new Error("형식");
+      const books = BIBLE_BOOKS.map(([abbr, name]) => ({ abbr, name, chapters: [null] }));
+      const flat = [];
+      let count = 0;
+      for (const key of Object.keys(raw)) {
+        const m = /^(.+?)(\d+):(.+)$/.exec(key);
+        if (!m) continue;
+        const bi = BIBLE_ABBR.get(m[1]);
+        if (bi == null) continue;
+        const c = Number(m[2]);
+        const label = /^\d+(-\d+)?$/.test(m[3]) ? m[3] : "";
+        const t = String(raw[key] == null ? "" : raw[key]).trim();
+        const chapters = books[bi].chapters;
+        while (chapters.length <= c) chapters.push(null);
+        if (!chapters[c]) chapters[c] = [];
+        chapters[c].push({ l: label, t });
+        flat.push({ b: bi, c, l: label, t });
+        count += 1;
+      }
+      if (count < 1000) throw new Error("형식");
+      return { books, flat };
+    }
+    async function bvLoad() {
+      if (bible || bibleBusy) return;
+      bibleBusy = "본문을 불러오는 중…";
+      bvRenderRead();
+      try {
+        /* 1순위: 앱과 같은 곳의 bible.json (앱을 받을 때 함께 내려받아 캐시됨) */
+        let fetched = "";
+        try {
+          const r = await fetch("bible.json");
+          if (r.ok) fetched = await r.text();
+        } catch (error) { fetched = ""; }
+        if (fetched) {
+          try { bible = bvParse(fetched); } catch (error) { bible = null; }
+          if (bible) {
+            const stored = await bvStoreGet();
+            if (!stored) bvStoreSet(fetched); /* 파일로 직접 열 때를 위한 기기 저장본 */
+          }
+        }
+        /* 2순위: 이전에 기기에 저장해 둔 bible.json (파일로 직접 열었을 때) */
+        if (!bible) {
+          const text = await bvStoreGet();
+          if (text) bible = bvParse(text);
+        }
+      } catch (error) { bible = null; }
+      bibleBusy = "";
+      if (bible) bvRestorePos();
+      bvRenderRead();
+      bvConsumePending();
+    }
+    async function bvImport(file) {
+      if (!file) return;
+      bibleBusy = "가져오는 중입니다…";
+      bvRenderRead();
+      try {
+        const text = await file.text();
+        const parsed = bvParse(text);
+        bible = parsed;
+        const ok = await bvStoreSet(text);
+        bibleBusy = "";
+        bpos = { b: 0, c: 1 };
+        bvShowChapter(0, 1, null, { record: false });
+        if (!ok) bvToast("이 기기에서는 본문을 저장할 수 없어, 앱을 닫으면 다시 가져와야 합니다.");
+        else bvToast(`성경 본문 ${parsed.flat.length.toLocaleString()}절을 가져왔습니다.`);
+      } catch (error) {
+        bibleBusy = "";
+        bvToast("이 파일은 성경 본문(JSON)이 아닙니다. 「창1:1」 형식의 bible.json을 선택해 주세요.");
+        bvRenderRead();
+      }
+    }
+    let bvToastTimer = 0;
+    function bvToast(message) {
+      let el = document.getElementById("bvToast");
+      if (!el) {
+        el = document.createElement("div");
+        el.id = "bvToast";
+        el.style.cssText = "position:absolute;left:12px;right:12px;bottom:84px;z-index:5;padding:12px 14px;border-radius:12px;background:#222;color:#fff;font-size:0.92rem;line-height:1.5;text-align:center";
+        bibleView.append(el);
+      }
+      el.textContent = message;
+      el.hidden = false;
+      clearTimeout(bvToastTimer);
+      bvToastTimer = setTimeout(() => { el.hidden = true; }, 4500);
+    }
+
+    /* ---- 위치·내역 ---- */
+    function bvRestorePos() {
+      try {
+        const p = JSON.parse(localStorage.getItem(BIBLE_POS_KEY) || "null");
+        if (p && bible.books[p.b] && bible.books[p.b].chapters[p.c]) { bpos = { b: p.b, c: p.c }; return; }
+      } catch (error) {}
+      bpos = { b: 0, c: 1 };
+    }
+    function bvHistGet() {
+      try { const h = JSON.parse(localStorage.getItem(BIBLE_HIST_KEY) || "[]"); return Array.isArray(h) ? h : []; } catch (error) { return []; }
+    }
+    function bvRecord(b, c, v) {
+      try {
+        localStorage.setItem(BIBLE_POS_KEY, JSON.stringify({ b, c }));
+      } catch (error) {}
+    }
+
+    /* ---- 읽기 화면 ---- */
+    const bvRef = (b, c, v) => `${bible.books[b].name} ${c}${v ? `:${v}` : "장"}`;
+    function bvRenderRead() {
+      bvSelected.clear();
+      bvUpdateSel();
+      bvBody.replaceChildren();
+      if (!bible) {
+        bvMode = "import";
+        bvTitle.textContent = "성경";
+        bvPrev.disabled = true;
+        bvNext.disabled = true;
+        bvPos.textContent = "";
+        const card = document.createElement("div");
+        card.className = "bv-card";
+        const h = document.createElement("h3");
+        const p = document.createElement("p");
+        if (bibleBusy) {
+          h.textContent = bibleBusy;
+          p.textContent = "잠시만 기다려 주세요.";
+          card.append(h, p);
+        } else {
+          h.textContent = "성경 본문을 가져오세요";
+          p.innerHTML = "성경은 앱과 같은 폴더의 <b>bible.json</b>(개정개혁)만 사용합니다.<br>앱 파일과 함께 <b>bible.json</b>을 두면 자동으로 읽습니다. 파일로 직접 연 경우에는 아래에서 한 번만 선택하면 이 기기에 저장됩니다.";
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "bv-main";
+          btn.textContent = "bible.json 선택";
+          btn.addEventListener("click", () => bvFile.click());
+          card.append(h, p, btn);
+        }
+        bvBody.append(card);
+        return;
+      }
+      bvMode = "read";
+      bvShowChapter(bpos.b, bpos.c, null, { record: false, keepScroll: true });
+    }
+    /* ---- 개역한글·NIV·KJV: bolls.life에서 장 단위로 받아 기기에 저장 ---- */
+    const bvChCache = new Map();
+    function bvClean(text) {
+      return String(text || "").replace(/<S>[^<]*<\/S>/gi, "").replace(/<br\s*\/?>/gi, " ").replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ")
+        .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+        .replace(/([A-Za-z])\d{1,5}(?=[\s,.;:!?'")]|$)/g, "$1") /* 낱말 뒤에 붙은 스트롱 번호 제거 */
+        .replace(/\s+/g, " ").trim();
+    }
+    async function bvChGet(key) {
+      try {
+        const db = await bvDb();
+        return await new Promise((resolve) => {
+          const r = db.transaction("ch").objectStore("ch").get(key);
+          r.onsuccess = () => resolve(r.result || null);
+          r.onerror = () => resolve(null);
+        });
+      } catch (error) { return null; }
+    }
+    async function bvChSet(key, value) {
+      try {
+        const db = await bvDb();
+        await new Promise((resolve) => {
+          const tx = db.transaction("ch", "readwrite");
+          tx.objectStore("ch").put(value, key);
+          tx.oncomplete = resolve;
+          tx.onerror = resolve;
+          tx.onabort = resolve;
+        });
+      } catch (error) {}
+    }
+    /* 결과: [{v: 절번호, t: 본문}] 또는 null(받지 못함) */
+    /* bolls.life는 NIV 요청에 구절 대신 항의 문구를 돌려줍니다. 이런 응답은 본문으로 쓰지 않습니다. */
+    const bvBlocked = new Set();
+    const bvIsNotice = (text) => /Biblica, Inc\.|has prohibited me from using/i.test(String(text || ""));
+    async function bvFetchChapter(code, b, c) {
+      const key = `v2/${code}/${b + 1}/${c}`; /* v2: 스트롱 번호가 섞여 저장된 예전 캐시는 쓰지 않음 */
+      if (bvBlocked.has(code)) return null;
+      if (bvChCache.has(key)) return bvChCache.get(key);
+      let data = await bvChGet(key);
+      if (data && data.some((x) => bvIsNotice(x.t))) data = null; /* 예전에 저장된 잘못된 응답은 버림 */
+      if (!data) {
+        try {
+          const r = await fetch(`https://bolls.life/get-text/${code}/${b + 1}/${c}/`);
+          if (!r.ok) throw new Error("http");
+          const arr = await r.json();
+          if (!Array.isArray(arr) || !arr.length) throw new Error("empty");
+          if (arr.some((x) => bvIsNotice(x.text))) { bvBlocked.add(code); throw new Error("blocked"); }
+          data = arr.map((x) => ({ v: Number(x.verse), t: bvClean(x.text) })).filter((x) => x.v > 0);
+          if (!data.length) throw new Error("empty");
+          bvChSet(key, data);
+        } catch (error) { return null; }
+      }
+      bvChCache.set(key, data);
+      return data;
+    }
+    /* 개정개혁(bible.json)의 절 목록에서 번호로 본문 찾기 */
+    function bvLocalText(b, c, n) {
+      const list = (bible.books[b].chapters[c] || []);
+      const hits = list.filter((x) => {
+        if (!x.l) return false;
+        const [from, to] = x.l.split("-").map(Number);
+        return to ? (n >= from && n <= to) : from === n;
+      });
+      return hits.map((x) => x.t).join(" ");
+    }
+    function bvVerseNumbers(label) {
+      const [from, to] = String(label).split("-").map(Number);
+      const out = [];
+      for (let n = from; n <= (to || from); n += 1) out.push(n);
+      return out;
+    }
+    let bvShowToken = 0;
+    let bvCur = { b: 0, c: 1, verses: [], ver: "NEW" };
+    async function bvMainVerses(b, c) {
+      if (bset.main === "NEW") return bible.books[b].chapters[c] || [];
+      const data = await bvFetchChapter(bset.main, b, c);
+      return data ? data.map((x) => ({ l: String(x.v), t: x.t })) : null;
+    }
+    function bvShowChapter(b, c, verse, opts) {
+      if (!bible) return;
+      const o = opts || {};
+      const book = bible.books[b];
+      if (!book) return;
+      let chapter = Math.max(1, Math.min(c, book.chapters.length - 1));
+      while (chapter > 1 && !book.chapters[chapter]) chapter -= 1;
+      bpos = { b, c: chapter };
+      bvMode = "read";
+      bvSelected.clear();
+      bvUpdateSel();
+      const token = ++bvShowToken;
+      bvTitle.textContent = `${book.name} ${chapter}장 ▾`;
+      bvPos.textContent = `${chapter} / ${book.chapters.length - 1}`;
+      bvPrev.disabled = b === 0 && chapter === 1;
+      bvNext.disabled = b === bible.books.length - 1 && chapter === book.chapters.length - 1;
+      if (o.record !== false) bvRecord(b, chapter, verse);
+      const head = () => {
+        const h = document.createElement("h2");
+        h.className = "bv-h";
+        h.textContent = `${book.name} ${chapter}장`;
+        const sm = document.createElement("small");
+        sm.textContent = [bset.main].concat(bset.par).map((x) => BIBLE_VERS[x]).join(" · ");
+        h.append(sm);
+        return h;
+      };
+      const finish = (verses) => {
+        if (token !== bvShowToken) return;
+        bvCur = { b, c: chapter, verses, ver: bset.main };
+        bvBody.replaceChildren(head());
+        let last = null;
+        for (const item of verses) {
+          const p = document.createElement("p");
+          p.className = "bv-v";
+          if (item.l) {
+            p.dataset.v = item.l;
+            const sup = document.createElement("sup");
+            sup.textContent = item.l;
+            p.append(sup, document.createTextNode(item.t));
+            last = p;
+          } else {
+            p.classList.add("cont");
+            if (last && last.dataset.v) p.dataset.v = last.dataset.v;
+            p.textContent = item.t;
+          }
+          bvBody.append(p);
+        }
+        const end = document.createElement("div");
+        end.className = "bv-end";
+        end.textContent = `— ${book.name} ${chapter}장 끝 —`;
+        bvBody.append(end);
+        if (verse) {
+          const first = Number(String(verse).split("-")[0]);
+          const target = Array.from(bvBody.querySelectorAll(".bv-v")).filter((el) => {
+            const v = el.dataset.v || "";
+            const [from, to] = v.split("-").map(Number);
+            return to ? (first >= from && first <= to) : from === first;
+          });
+          target.forEach((el) => el.classList.add("hit"));
+          if (target[0]) setTimeout(() => target[0].scrollIntoView({ block: "center" }), 30);
+        } else if (!o.keepScroll) {
+          bvBody.scrollTop = 0;
+        }
+        bvFillParallel(token, b, chapter);
+      };
+      if (bset.main === "NEW") { finish(book.chapters[chapter] || []); return; }
+      /* 다른 성경이 본문이면 받아 오는 동안 안내 */
+      bvBody.replaceChildren(head());
+      const wait = document.createElement("div");
+      wait.className = "bv-card";
+      wait.innerHTML = "<h3>불러오는 중…</h3><p>" + BIBLE_VERS[bset.main] + " 본문을 받아 오고 있습니다.</p>";
+      bvBody.append(wait);
+      bvMainVerses(b, chapter).then((verses) => {
+        if (token !== bvShowToken) return;
+        if (verses) { finish(verses); return; }
+        bvBody.replaceChildren(head());
+        const card = document.createElement("div");
+        card.className = "bv-card";
+        const h3 = document.createElement("h3");
+        h3.textContent = `${BIBLE_VERS[bset.main]} 본문을 받지 못했습니다`;
+        const p = document.createElement("p");
+        p.textContent = bvBlocked.has(bset.main)
+          ? "이 성경은 저작권사의 요구로 본문 제공 서버(bolls.life)에서 제공이 중단되어 받을 수 없습니다."
+          : "인터넷 연결을 확인해 주세요. 한 번 읽은 장은 기기에 저장되어 다음부터는 연결 없이 볼 수 있습니다.";
+        const retry = document.createElement("button");
+        retry.type = "button";
+        retry.className = "bv-main";
+        retry.textContent = "다시 시도";
+        retry.addEventListener("click", () => bvShowChapter(b, chapter, verse, o));
+        const back = document.createElement("button");
+        back.type = "button";
+        back.className = "bv-ghost";
+        back.textContent = "개정개혁으로 보기";
+        back.addEventListener("click", () => { bset.main = "NEW"; bset.par = bset.par.filter((x) => x !== "NEW"); bvSaveSettings(); bvShowChapter(b, chapter, verse, o); });
+        card.append(h3, p, retry, back);
+        bvBody.append(card);
+      });
+    }
+    /* 대역: 선택한 성경을 각 절 아래에 나란히 */
+    async function bvFillParallel(token, b, c) {
+      for (const code of bset.par) {
+        let map = null;
+        if (code === "NEW") {
+          map = (n) => bvLocalText(b, c, n);
+        } else {
+          const data = await bvFetchChapter(code, b, c);
+          if (token !== bvShowToken) return;
+          if (data) { const m = new Map(data.map((x) => [x.v, x.t])); map = (n) => m.get(n) || ""; }
+        }
+        if (token !== bvShowToken) return;
+        for (const p of Array.from(bvBody.querySelectorAll(".bv-v[data-v]:not(.cont)"))) {
+          const row = document.createElement("span");
+          row.className = "bv-pv";
+          row.dataset.ver = code;
+          const tag = document.createElement("b");
+          tag.textContent = BIBLE_VERS[code];
+          row.append(tag);
+          if (!map) { row.append(document.createTextNode(bvBlocked.has(code) ? "제공되지 않음" : "불러오지 못함")); row.classList.add("off"); }
+          else {
+            const text = bvVerseNumbers(p.dataset.v).map(map).filter(Boolean).join(" ");
+            row.append(document.createTextNode(text || "—"));
+          }
+          p.append(row);
+        }
+      }
+    }
+    function bvStep(delta) {
+      if (!bible || bvMode !== "read") return;
+      let { b, c } = bpos;
+      c += delta;
+      if (c < 1) {
+        if (b === 0) return;
+        b -= 1;
+        c = bible.books[b].chapters.length - 1;
+      } else if (c > bible.books[b].chapters.length - 1) {
+        if (b >= bible.books.length - 1) return;
+        b += 1;
+        c = 1;
+      }
+      bvShowChapter(b, c, null);
+    }
+
+    /* ---- 절 선택·복사 ---- */
+    function bvUpdateSel() {
+      const n = bvSelected.size;
+      bvSel.hidden = n === 0;
+      if (n) bvSelInfo.textContent = `${n}절 선택`;
+    }
+    bvBody.addEventListener("click", (event) => {
+      const p = event.target.closest && event.target.closest(".bv-v");
+      if (!p || !p.dataset.v || bvMode !== "read") return;
+      const v = p.dataset.v;
+      const group = bvBody.querySelectorAll(`.bv-v[data-v="${v}"]`);
+      const on = !bvSelected.has(v);
+      if (on) bvSelected.add(v); else bvSelected.delete(v);
+      group.forEach((el) => { el.classList.toggle("sel", on); el.classList.remove("hit"); });
+      bvUpdateSel();
+    });
+    function bvSelectedText() {
+      const book = bible.books[bvCur.b];
+      const picked = [];
+      const labels = [];
+      let prevLabel = "";
+      for (const item of bvCur.verses) {
+        const label = item.l || prevLabel;
+        if (item.l) prevLabel = item.l;
+        if (label && bvSelected.has(label)) {
+          picked.push(item.l ? `${item.l} ${item.t}` : item.t);
+          if (item.l) labels.push(item.l);
+          if (item.l) {
+            bvBody.querySelectorAll(`.bv-v[data-v="${item.l}"] .bv-pv`).forEach((row) => {
+              picked.push(`   [${row.firstChild.textContent}] ${row.lastChild.textContent}`);
+            });
+          }
+        }
+      }
+      const nums = labels.map((l) => Number(l.split("-")[0])).sort((a, b) => a - b);
+      const ranges = [];
+      for (const n of nums) {
+        const last = ranges[ranges.length - 1];
+        if (last && n === last[1] + 1) last[1] = n; else ranges.push([n, n]);
+      }
+      const refText = ranges.map(([a, b]) => (a === b ? `${a}` : `${a}-${b}`)).join(",");
+      return `${book.name} ${bvCur.c}:${refText} (${BIBLE_VERS[bvCur.ver]})\n${picked.join("\n")}`;
+    }
+    async function bvCopy() {
+      const text = bvSelectedText();
+      let ok = false;
+      try { await navigator.clipboard.writeText(text); ok = true; } catch (error) {}
+      if (!ok) {
+        try {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.cssText = "position:fixed;opacity:0";
+          document.body.append(ta);
+          ta.select();
+          ok = document.execCommand("copy");
+          ta.remove();
+        } catch (error) {}
+      }
+      bvToast(ok ? "선택한 구절을 복사했습니다." : "복사하지 못했습니다.");
+      if (ok) {
+        bvSelected.clear();
+        bvBody.querySelectorAll(".bv-v.sel").forEach((el) => el.classList.remove("sel"));
+        bvUpdateSel();
+      }
+    }
+
+    /* ---- 패널(책·장 / 찾기 / 내역 / 설정) ---- */
+    function bvOpenPanel(name) {
+      if (!bibleOpen) return;
+      const had = Boolean(biblePanel);
+      biblePanel = name;
+      bvPanel.hidden = false;
+      if (had) replaceNav(); else pushNav();
+      bvRenderPanel();
+    }
+    function bvHidePanel() {
+      const was = biblePanel;
+      biblePanel = null;
+      if (was === "set" && bible && bvMode === "read") bvShowChapter(bpos.b, bpos.c, null, { record: false, keepScroll: true });
+      bvPanel.hidden = true;
+      bvPBody.replaceChildren();
+    }
+    function bvClosePanel() {
+      if (!biblePanel) return;
+      if (history.state && history.state.bb === 2) history.back();
+      else bvHidePanel();
+    }
+    function bvRenderPanel() {
+      bvPBody.replaceChildren();
+      if (biblePanel === "books") bvPanelBooks(null);
+      else if (biblePanel === "find") bvPanelFind();
+      else if (biblePanel === "hist") bvPanelHist();
+      else if (biblePanel === "set") bvPanelSet();
+    }
+    let bvTab = 0;
+    function bvPanelBooks(pickBook) {
+      bvPTitle.textContent = pickBook == null ? "책 선택" : `${BIBLE_BOOKS[pickBook][1]} · 장 선택`;
+      bvPBody.replaceChildren();
+      if (!bible) { bvPBody.innerHTML = '<p class="bv-note">먼저 성경 본문을 가져와 주세요.</p>'; return; }
+      if (pickBook == null) {
+        const tabs = document.createElement("div");
+        tabs.className = "bv-tabs";
+        ["구약", "신약"].forEach((label, i) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.textContent = label;
+          b.className = i === bvTab ? "on" : "";
+          b.addEventListener("click", () => { bvTab = i; bvPanelBooks(null); });
+          tabs.append(b);
+        });
+        const grid = document.createElement("div");
+        grid.className = "bv-grid";
+        const from = bvTab === 0 ? 0 : 39;
+        const to = bvTab === 0 ? 39 : 66;
+        for (let i = from; i < to; i += 1) {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.textContent = BIBLE_BOOKS[i][1];
+          if (i === bpos.b) b.className = "cur";
+          b.addEventListener("click", () => bvPanelBooks(i));
+          grid.append(b);
+        }
+        bvPBody.append(tabs, grid);
+        return;
+      }
+      const back = document.createElement("button");
+      back.type = "button";
+      back.className = "bv-ghost";
+      back.style.marginBottom = "10px";
+      back.textContent = "‹ 책 목록";
+      back.addEventListener("click", () => bvPanelBooks(null));
+      const grid = document.createElement("div");
+      grid.className = "bv-grid ch";
+      const total = bible.books[pickBook].chapters.length - 1;
+      for (let c = 1; c <= total; c += 1) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = String(c);
+        if (pickBook === bpos.b && c === bpos.c) b.className = "cur";
+        b.addEventListener("click", () => { bvGo(pickBook, c, null); });
+        grid.append(b);
+      }
+      bvPBody.append(back, grid);
+    }
+    function bvGo(b, c, v) {
+      bvShowChapter(b, c, v);
+      bvClosePanel();
+    }
+
+    /* 빠른 찾기: 「요3:16」「시편 23」「요한복음 3장 16절」, 그 밖에는 본문 검색 */
+    function bvFindBooks(name) {
+      if (BIBLE_ABBR.has(name)) return [BIBLE_ABBR.get(name)];
+      const exact = BIBLE_BOOKS.findIndex((b) => b[1] === name);
+      if (exact >= 0) return [exact];
+      if (BIBLE_ALIAS[name] != null) return [BIBLE_ALIAS[name]];
+      if (name.length < 2) return [];
+      const out = [];
+      BIBLE_BOOKS.forEach((b, i) => { if (b[1].startsWith(name)) out.push(i); });
+      return out;
+    }
+    function bvParseRef(q) {
+      const s = q.replace(/\s+/g, "").replace(/장/g, ":").replace(/절/g, "").replace(/:$/, "").replace(/[.,](?=\d)/, ":");
+      const m = /^([^\d:~\-]+)(\d+)?(?::(\d+)(?:[-~](\d+))?)?$/.exec(s);
+      if (!m) return [];
+      const books = bvFindBooks(m[1]);
+      const out = [];
+      for (const b of books.slice(0, 6)) {
+        const total = bible.books[b].chapters.length - 1;
+        let c = m[2] ? Number(m[2]) : 1;
+        if (c < 1 || c > total) { if (books.length === 1 && m[2]) out.push({ b, bad: total }); continue; }
+        out.push({ b, c, v: m[3] ? (m[4] ? `${m[3]}-${m[4]}` : m[3]) : null });
+      }
+      return out;
+    }
+    let bvScope = 0;
+    function bvPanelFind() {
+      bvPTitle.textContent = "찾기";
+      bvPBody.replaceChildren();
+      if (!bible) { bvPBody.innerHTML = '<p class="bv-note">먼저 성경 본문을 가져와 주세요.</p>'; return; }
+      const input = document.createElement("input");
+      input.type = "search";
+      input.className = "bv-input";
+      input.placeholder = "예) 요3:16 · 시편 23 · 사랑";
+      input.setAttribute("enterkeyhint", "search");
+      input.autocomplete = "off";
+      const chips = document.createElement("div");
+      chips.className = "bv-chips";
+      ["전체", "구약", "신약"].forEach((label, i) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "bv-chip" + (i === bvScope ? " on" : "");
+        b.textContent = label;
+        b.addEventListener("click", () => {
+          bvScope = i;
+          chips.querySelectorAll(".bv-chip").forEach((x, j) => x.classList.toggle("on", j === i));
+          run();
+        });
+        chips.append(b);
+      });
+      const out = document.createElement("div");
+      out.className = "bv-list";
+      bvPBody.append(input, chips, out);
+      let timer = 0;
+      const row = (title, text, cls, onClick, terms) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "bv-row" + (cls ? ` ${cls}` : "");
+        const t = document.createElement("b");
+        t.textContent = title;
+        b.append(t);
+        if (text) {
+          const s = document.createElement("small");
+          if (terms && terms.length) {
+            let rest = text;
+            const re = new RegExp(`(${terms.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`, "g");
+            for (const part of rest.split(re)) {
+              if (!part) continue;
+              if (terms.includes(part)) { const mk = document.createElement("mark"); mk.textContent = part; s.append(mk); }
+              else s.append(document.createTextNode(part));
+            }
+          } else s.textContent = text;
+          b.append(s);
+        }
+        b.addEventListener("click", onClick);
+        return b;
+      };
+      function run() {
+        out.replaceChildren();
+        const q = input.value.trim();
+        if (!q) {
+          const n = document.createElement("p");
+          n.className = "bv-note";
+          n.textContent = "책 이름과 장·절을 입력하면 바로 이동하고, 낱말을 입력하면 본문에서 찾습니다.";
+          out.append(n);
+          return;
+        }
+        let first = null;
+        for (const r of bvParseRef(q)) {
+          if (r.bad) {
+            const n = document.createElement("p");
+            n.className = "bv-note";
+            n.textContent = `${BIBLE_BOOKS[r.b][1]}은(는) ${r.bad}장까지 있습니다.`;
+            out.append(n);
+            continue;
+          }
+          const verses = (bible.books[r.b].chapters[r.c] || []);
+          const preview = r.v ? (verses.find((x) => x.l === r.v.split("-")[0]) || {}).t : (verses[0] || {}).t;
+          const el = row(`${bvRef(r.b, r.c, r.v)} 바로가기`, preview || "", "go", () => bvGo(r.b, r.c, r.v));
+          if (!first) first = () => bvGo(r.b, r.c, r.v);
+          out.append(el);
+        }
+        input._enter = first;
+        const terms = q.split(/\s+/).filter(Boolean);
+        if (q.replace(/\s+/g, "").length < 2) return;
+        const from = bvScope === 2 ? 39 : 0;
+        const to = bvScope === 1 ? 39 : 66;
+        const hits = [];
+        let total = 0;
+        for (const v of bible.flat) {
+          if (v.b < from || v.b >= to) continue;
+          let ok = true;
+          for (const t of terms) { if (!v.t.includes(t)) { ok = false; break; } }
+          if (!ok) continue;
+          total += 1;
+          if (hits.length < 100) hits.push(v);
+        }
+        const info = document.createElement("p");
+        info.className = "bv-note";
+        info.textContent = total ? `본문 검색 결과 ${total.toLocaleString()}개${total > hits.length ? ` 중 앞 ${hits.length}개` : ""}` : "본문에서 찾은 결과가 없습니다.";
+        out.append(info);
+        for (const v of hits) {
+          out.append(row(`${BIBLE_BOOKS[v.b][0]}${v.c}:${v.l || "…"} · ${BIBLE_BOOKS[v.b][1]}`, v.t, "", () => bvGo(v.b, v.c, v.l || null), terms));
+        }
+      }
+      input.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(run, 220); });
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") { event.preventDefault(); clearTimeout(timer); run(); if (input._enter) input._enter(); input.blur(); }
+      });
+      run();
+      setTimeout(() => input.focus(), 60);
+    }
+    function bvPanelHist() {
+      bvPTitle.textContent = "읽은 내역";
+      bvPBody.replaceChildren();
+      const h = bvHistGet().filter((x) => bible && bible.books[x.b]);
+      if (!h.length) { bvPBody.innerHTML = '<p class="bv-note">아직 읽은 내역이 없습니다.</p>'; return; }
+      const list = document.createElement("div");
+      list.className = "bv-list";
+      const fmt = (ts) => {
+        const d = new Date(ts);
+        const p = (n) => String(n).padStart(2, "0");
+        return `${d.getMonth() + 1}/${d.getDate()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+      };
+      for (const x of h) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "bv-row";
+        const t = document.createElement("b");
+        t.textContent = bvRef(x.b, x.c, x.v);
+        const s = document.createElement("small");
+        s.textContent = fmt(x.ts);
+        b.append(t, s);
+        b.addEventListener("click", () => bvGo(x.b, x.c, x.v));
+        list.append(b);
+      }
+      const clear = document.createElement("button");
+      clear.type = "button";
+      clear.className = "bv-ghost bv-danger";
+      clear.textContent = "내역 모두 지우기";
+      clear.addEventListener("click", () => {
+        if (!window.confirm("읽은 내역을 모두 지울까요?")) return;
+        try { localStorage.removeItem(BIBLE_HIST_KEY); } catch (error) {}
+        bvPanelHist();
+      });
+      bvPBody.append(list, clear);
+    }
+    function bvPanelSet() {
+      bvPTitle.textContent = "설정";
+      bvPBody.replaceChildren();
+      const sample = document.createElement("div");
+      sample.className = "bv-sample";
+      const sp = document.createElement("p");
+      sp.className = "bv-v";
+      sp.innerHTML = "<sup>16</sup>하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니";
+      sample.append(sp);
+      bvPBody.append(sample);
+      const apply = () => { bvSaveSettings(); bvApplySettings(); };
+      const seg = (label, options, get, set) => {
+        const wrap = document.createElement("div");
+        wrap.className = "bv-set";
+        const span = document.createElement("span");
+        span.textContent = label;
+        const box = document.createElement("div");
+        box.className = "bv-seg";
+        options.forEach(([text, value]) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.textContent = text;
+          if (get() === value) b.className = "on";
+          b.addEventListener("click", () => {
+            set(value);
+            apply();
+            box.querySelectorAll("button").forEach((x) => x.classList.remove("on"));
+            b.classList.add("on");
+          });
+          box.append(b);
+        });
+        wrap.append(span, box);
+        bvPBody.append(wrap);
+      };
+      const size = document.createElement("div");
+      size.className = "bv-set";
+      const sl = document.createElement("span");
+      sl.textContent = "글자 크기";
+      const sb = document.createElement("div");
+      sb.className = "bv-seg";
+      const val = document.createElement("button");
+      val.type = "button";
+      val.style.pointerEvents = "none";
+      const upd = () => { val.textContent = `${bset.size}px`; };
+      const mk = (text, d) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = text;
+        b.addEventListener("click", () => { bset.size = Math.max(13, Math.min(40, bset.size + d)); upd(); apply(); });
+        return b;
+      };
+      upd();
+      sb.append(mk("−", -1), val, mk("＋", 1));
+      size.append(sl, sb);
+      bvPBody.append(size);
+      seg("본문 성경", BIBLE_VER_CODES.map((c) => [BIBLE_VERS[c], c]), () => bset.main, (v) => {
+        bset.main = v;
+        bset.par = bset.par.filter((x) => x !== v);
+        bvSaveSettings();
+        bvPanelSet();
+      });
+      const par = document.createElement("div");
+      par.className = "bv-set";
+      par.style.alignItems = "flex-start";
+      const pl = document.createElement("span");
+      pl.textContent = "대역 (절 아래에 함께)";
+      const pb = document.createElement("div");
+      pb.className = "bv-seg";
+      pb.style.flexWrap = "wrap";
+      pb.style.justifyContent = "flex-end";
+      BIBLE_VER_CODES.filter((c) => c !== bset.main).forEach((c) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = BIBLE_VERS[c];
+        if (bset.par.includes(c)) b.className = "on";
+        b.addEventListener("click", () => {
+          if (bset.par.includes(c)) bset.par = bset.par.filter((x) => x !== c);
+          else bset.par = bset.par.concat(c);
+          bvSaveSettings();
+          b.classList.toggle("on", bset.par.includes(c));
+        });
+        pb.append(b);
+      });
+      par.append(pl, pb);
+      bvPBody.append(par);
+      const pnote = document.createElement("p");
+      pnote.className = "bv-note";
+      pnote.textContent = "개역한글·KJV·ASV·WEB는 인터넷(bolls.life)에서 장 단위로 받아 오며, 읽은 장은 기기에 저장되어 다음부터 연결 없이 볼 수 있습니다. 개정개혁은 bible.json을 사용합니다.";
+      bvPBody.append(pnote);
+      seg("줄 간격", [["좁게", 1.5], ["보통", 1.8], ["넓게", 2.2]], () => bset.lh, (v) => { bset.lh = v; });
+      seg("글꼴", [["고딕", "sans"], ["명조", "serif"]], () => bset.font, (v) => { bset.font = v; });
+      seg("화면 색", [["밝게", "light"], ["종이", "sepia"], ["어둡게", "dark"]], () => bset.theme, (v) => { bset.theme = v; });
+      seg("절 번호", [["표시", true], ["숨김", false]], () => bset.nums, (v) => { bset.nums = v; });
+      seg("옆으로 밀어 넘기기", [["켜짐", true], ["꺼짐", false]], () => bset.swipe, (v) => { bset.swipe = v; });
+      seg("읽는 동안 화면 켜두기", [["켜짐", true], ["꺼짐", false]], () => bset.awake, (v) => { bset.awake = v; bvWakeSync(); });
+      const re = document.createElement("button");
+      re.type = "button";
+      re.className = "bv-ghost";
+      re.textContent = "성경 본문 다시 가져오기";
+      re.addEventListener("click", () => bvFile.click());
+      const del = document.createElement("button");
+      del.type = "button";
+      del.className = "bv-ghost bv-danger";
+      del.textContent = "이 기기에서 성경 본문 삭제";
+      del.addEventListener("click", async () => {
+        if (!window.confirm("이 기기에 저장된 성경 본문을 삭제할까요? (다시 가져올 수 있습니다)")) return;
+        await bvStoreDel();
+        bible = null;
+        bvClosePanel();
+        bvRenderRead();
+      });
+      bvPBody.append(re, del);
+      const note = document.createElement("p");
+      note.className = "bv-note";
+      note.textContent = bible ? `저장된 본문: ${bible.flat.length.toLocaleString()}절` : "저장된 본문이 없습니다.";
+      bvPBody.append(note);
+    }
+
+    /* ---- 화면 켜두기 ---- */
+    async function bvWakeSync() {
+      try {
+        if (bset.awake && bibleOpen && navigator.wakeLock) {
+          if (!bvWake) bvWake = await navigator.wakeLock.request("screen");
+        } else if (bvWake) {
+          await bvWake.release();
+          bvWake = null;
+        }
+      } catch (error) { bvWake = null; }
+    }
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && bibleOpen && bset.awake) { bvWake = null; bvWakeSync(); }
+    });
+
+    /* ---- 열기·닫기 ---- */
+    /* ---- 강의 제목 → 성경 책 ---- */
+    let bvPending = null;
+    const bvNorm = (t) => String(t || "").replace(/[^가-힣]/g, "").replace(/서$/, "");
+    const BIBLE_KEYWORDS = [["창조", 0], ["타락", 0], ["홍수", 0], ["바벨탑", 0], ["족장", 0], ["출애굽", 1]];
+    function bvMatchBook(lectureName) {
+      let t = String(lectureName || "").replace(/\.[^.]+$/, "").replace(/^\s*\d+\s*/, "");
+      const alias = /요한\s*([123])\s*서/.exec(t);
+      if (alias) return 60 + Number(alias[1]); /* 요일=61, 요이=62, 요삼=63 */
+      const key = bvNorm(t);
+      if (key.length < 2) return -1;
+      let hit = BIBLE_BOOKS.findIndex((b) => bvNorm(b[1]) === key);
+      if (hit < 0) hit = BIBLE_BOOKS.findIndex((b) => bvNorm(b[1]).startsWith(key));
+      if (hit < 0) hit = BIBLE_BOOKS.findIndex((b) => key.startsWith(bvNorm(b[1])) && bvNorm(b[1]).length >= 2);
+      if (hit < 0) { const k = BIBLE_KEYWORDS.find(([w]) => key.includes(w)); if (k) hit = k[1]; }
+      return hit;
+    }
+    function bvConsumePending() {
+      const name = bvPending;
+      bvPending = null;
+      if (name == null || !bible) return;
+      const b = bvMatchBook(name);
+      const label = String(name).replace(/\.[^.]+$/, "").replace(/^\s*\d+\s*/, "");
+      if (b >= 0) {
+        bvShowChapter(b, 1, null);
+        bvToast(`「${label}」 강의 → ${BIBLE_BOOKS[b][1]} 1장`);
+      } else {
+        bvToast(`「${label}」와 비슷한 성경을 찾지 못했습니다. 책을 선택해 주세요.`);
+        bvTab = bpos.b >= 39 ? 1 : 0;
+        bvOpenPanel("books");
+      }
+    }
+    function openBible(lectureName) {
+      if (bibleOpen) return;
+      bvPending = typeof lectureName === "string" ? lectureName : null;
+      bibleOpen = true;
+      bvApplySettings();
+      bibleView.hidden = false;
+      document.body.classList.add("bible-open");
+      pushNav();
+      if (bible) { bvRenderRead(); bvConsumePending(); } else bvLoad();
+      bvWakeSync();
+    }
+    function bvHideAll() {
+      bibleOpen = false;
+      biblePanel = null;
+      bvPanel.hidden = true;
+      bibleView.hidden = true;
+      document.body.classList.remove("bible-open");
+      bvWakeSync();
+    }
+    function closeBible(fromPop) {
+      if (!bibleOpen) return;
+      const steps = (history.state && history.state.bb) | 0;
+      bvHideAll();
+      if (!fromPop && steps) { try { history.go(-steps); } catch (error) {} }
+    }
+    document.getElementById("bvClose").addEventListener("click", () => closeBible(false));
+    document.getElementById("bvTitle").addEventListener("click", () => bvOpenPanel("books"));
+    document.getElementById("bvFind").addEventListener("click", () => bvOpenPanel("find"));
+    document.getElementById("bvSet").addEventListener("click", () => bvOpenPanel("set"));
+    document.getElementById("bvBack").addEventListener("click", bvClosePanel);
+    document.getElementById("bvCopy").addEventListener("click", bvCopy);
+    document.getElementById("bvUnsel").addEventListener("click", () => {
+      bvSelected.clear();
+      bvBody.querySelectorAll(".bv-v.sel").forEach((el) => el.classList.remove("sel"));
+      bvUpdateSel();
+    });
+    bvPrev.addEventListener("click", () => bvStep(-1));
+    bvNext.addEventListener("click", () => bvStep(1));
+    bvFile.addEventListener("change", async () => {
+      const file = bvFile.files && bvFile.files[0];
+      bvFile.value = "";
+      if (!file) return;
+      if (biblePanel) bvClosePanel();
+      await bvImport(file);
+    });
+    (function bvSwipe() {
+      let s = null;
+      bvBody.addEventListener("touchstart", (event) => {
+        if (event.touches.length !== 1) { s = null; return; }
+        const t = event.touches[0];
+        s = { x: t.clientX, y: t.clientY, t: Date.now() };
+      }, { passive: true });
+      bvBody.addEventListener("touchend", (event) => {
+        if (!s || !bset.swipe || bvMode !== "read") { s = null; return; }
+        const t = event.changedTouches[0];
+        const dx = t.clientX - s.x;
+        const dy = t.clientY - s.y;
+        const dt = Date.now() - s.t;
+        s = null;
+        if (dt < 900 && Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.6) bvStep(dx < 0 ? 1 : -1);
+      }, { passive: true });
+    })();
+    document.addEventListener("keydown", (event) => {
+      if (!bibleOpen || biblePanel) return;
+      if (event.key === "ArrowRight") { event.preventDefault(); bvStep(1); }
+      else if (event.key === "ArrowLeft") { event.preventDefault(); bvStep(-1); }
+      else if (event.key === "Escape") { event.preventDefault(); closeBible(false); }
+    });
 
     updateSourceButtons();
     changeBtn.addEventListener("click", () => { if (usingLibrary) wipeLibrary(); else pickSource(); });

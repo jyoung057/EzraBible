@@ -1,4 +1,4 @@
-const CACHE = "ezra-bible-v6";
+const CACHE = "ezra-bible-v7";
 const ASSETS = [
   "./",
   "./index.html",
@@ -11,7 +11,9 @@ const ASSETS = [
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE)
+      .then((cache) => cache.addAll(ASSETS).then(() => cache.add("./bible.json").catch(() => {})))
+      .then(() => self.skipWaiting())
   );
 });
 
