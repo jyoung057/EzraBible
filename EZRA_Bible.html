@@ -1039,17 +1039,23 @@
       min-height: 0;
       overflow: auto;
       display: flex;
+      align-items: flex-start;
+      justify-content: safe center;
       padding: 4px;
       background: #111;
-      touch-action: pan-x pan-y;
+      touch-action: pan-y;
       overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+    .hymn-viewer-stage.fit-h {
+      align-items: safe center;
     }
     .hymn-viewer-stage img {
       display: block;
       flex: none;
       max-width: none;
       height: auto;
-      margin: auto;
+      margin: 0;
       background: #fff;
       -webkit-user-select: none;
       user-select: none;
@@ -1466,7 +1472,7 @@
     let bibleOpen = false;   /* 성경 읽기 화면이 열려 있는지 */
     let biblePanel = null;   /* 성경 안 패널(책/찾기/내역/설정) */
     let hymnZoom = 1;
-    let hymnMode = "h"; /* h: 높이에 맞춤, w: 폭에 맞춤, c: 직접 지정 */
+    let hymnMode = "w"; /* h: 높이에 맞춤, w: 폭에 맞춤, c: 직접 지정 */
     let hymnRenderToken = 0;
     let hymnNumeric = false;
     let hymnSearchTimer = 0;
@@ -2825,6 +2831,7 @@
       hymnZoom = rel;
       hymnImage.style.width = `${Math.round(W * rel)}px`;
       hymnZoomVal.textContent = `${Math.round(rel * 100)}%`;
+      hymnViewerStage.classList.toggle("fit-h", hymnMode === "h");
       hymnViewerStage.style.touchAction = hymnViewerStage.scrollWidth > hymnViewerStage.clientWidth + 2 ? "pan-x pan-y" : "pan-y";
       hymnFitW.classList.toggle("is-on", hymnMode === "w");
       hymnFitH.classList.toggle("is-on", hymnMode === "h");
@@ -2850,8 +2857,8 @@
       stage.scrollTop = (stage.scrollTop + py) * ratio - py;
     }
     function toggleHymnZoom(cx, cy) {
-      if (hymnMode === "h" || hymnZoom < 1.2) setHymnZoom(Math.max(1.8, hymnZoom * 2.2), cx, cy);
-      else setHymnFit("h");
+      if (hymnMode !== "c" || hymnZoom < 1.2) setHymnZoom(Math.max(1.8, hymnZoom * 2.2), cx, cy);
+      else setHymnFit("w");
     }
     function closeHymnViewer() {
       hymnShowToken += 1;
@@ -3120,7 +3127,7 @@
         }
         hymnObjectUrl = URL.createObjectURL(file);
         hymnImage.alt = `${hymn.n}장 ${hymn.title}`;
-        if (hymnMode === "c") hymnMode = "h"; /* 새 악보는 항상 높이에 맞춰 시작 */
+        if (hymnMode === "c") hymnMode = "w"; /* 새 악보는 폭에 맞춰 위부터 시작 */
         hymnImage.src = hymnObjectUrl; /* 읽기가 끝나면 load 이벤트에서 크기를 맞추고 표시합니다. */
       } catch (error) {
         if (token !== hymnShowToken) return;
