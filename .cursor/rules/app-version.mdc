@@ -1,0 +1,20 @@
+---
+description: EZRA_Bible.html을 수정하면 APP_VERSION 날짜와 rev를 함께 올린다
+globs: EZRA_Bible.html
+alwaysApply: true
+---
+
+# 앱 버전
+
+`EZRA_Bible.html`의 동작이나 내용이 바뀌면 같은 수정에서 `APP_VERSION`을 갱신한다.
+
+형식은 `YYYY-MM-DD rN`이다. 날짜는 수정한 날이고, `r` 뒤 번호는 기존 값보다 1 크다.
+
+```javascript
+// 2026-10-23 r32 다음에 2026-10-29에 수정한 경우
+const APP_VERSION = "2026-10-29 r33";
+```
+
+- 한 번의 수정 요청에는 rev를 한 번만 올린다.
+- `EZRA_Bible.html`이 아닌 파일만 바꾼 경우에는 버전을 올리지 않는다.
+- 화면에 보이는 `v ${APP_VERSION}` 문구는 이 상수를 그대로 쓰므로 별도로 고치지 않는다.
